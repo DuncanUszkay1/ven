@@ -3,17 +3,27 @@ import React from 'react';
 import icon from '../../assets/icon.svg';
 import './App.css';
 
-class IncrementButton extends React.Component {
+type IncrementState = {
+  counter: number;
+}
+class IncrementButton extends React.Component<{}, IncrementState> {
+  state = { counter: 1 };
+
   sendTestMessage() {
-    console.log("test")
+    console.log(this)
+    console.log(this.state)
+
+    this.setState((state) => ({
+      counter: state.counter + 1
+    }));
   }
 
   render() {
-    return <button type="button" id="file-test" onClick={this.sendTestMessage} >
+    return <button type="button" id="file-test" onClick={() => { this.sendTestMessage() } } >
       <span role="img" aria-label="books">
         📚
       </span>
-      Read our docs
+      Read our {this.state.counter} docs
     </button>
   }
 }
