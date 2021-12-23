@@ -3,6 +3,16 @@ import React from 'react';
 import icon from '../../assets/icon.svg';
 import './App.css';
 
+declare global {
+  interface Window {
+    electron: {
+      ipcRenderer: {
+        myPing: () => void;
+      }
+    }
+  }
+}
+
 type IncrementState = {
   counter: number;
 }
@@ -10,8 +20,7 @@ class IncrementButton extends React.Component<{}, IncrementState> {
   state = { counter: 1 };
 
   sendTestMessage() {
-    console.log(this)
-    console.log(this.state)
+    window.electron.ipcRenderer.myPing();
 
     this.setState((state) => ({
       counter: state.counter + 1

@@ -15,6 +15,7 @@ import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { resolveHtmlPath } from './util';
+import fs from 'fs';
 
 export default class AppUpdater {
   constructor() {
@@ -29,7 +30,9 @@ let mainWindow: BrowserWindow | null = null;
 ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
+  fs.readdir('.', (err, files) => {
+    event.reply('ipc-example', msgTemplate(files.join(',')));
+  })
 });
 
 if (process.env.NODE_ENV === 'production') {
