@@ -1,6 +1,7 @@
 import { MemoryRouter as Router, Switch, Route } from 'react-router-dom';
 import React from 'react';
 import icon from '../../assets/icon.svg';
+import Button from '@mui/material/Button';
 import './App.css';
 
 declare global {
@@ -28,12 +29,11 @@ class IncrementButton extends React.Component<{}, IncrementState> {
   }
 
   render() {
-    return <button type="button" id="file-test" onClick={() => { this.sendTestMessage() } } >
-      <span role="img" aria-label="books">
-        📚
-      </span>
-      Read our {this.state.counter} docs
-    </button>
+    return <div>
+        <Button variant="text" id="file-test" onClick={() => { this.sendTestMessage() } } >
+          Read our {this.state.counter} docs
+        </Button>
+      </div>
   }
 }
 
