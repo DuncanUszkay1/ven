@@ -30,7 +30,7 @@ class IncrementButton extends React.Component<{}, IncrementState> {
 
   render() {
     return <div>
-        <Button variant="text" id="file-test" onClick={() => { this.sendTestMessage() } } >
+        <Button variant="contained" id="file-test" onClick={() => { this.sendTestMessage() } } >
           Read our {this.state.counter} docs
         </Button>
       </div>
