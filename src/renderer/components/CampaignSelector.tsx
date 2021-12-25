@@ -3,8 +3,19 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import { Campaign } from '../App';
 
-export class CampaignSelector extends React.Component<{}, {}> {
+export class CampaignSelector extends React.Component<
+  { setCampaign: (campaign: Campaign) => void},
+  {}
+> {
+
+  loadCampaign() {
+    const dummyCampaign: Campaign = { name: "The Path of Misery" }
+
+    this.props.setCampaign(dummyCampaign);
+  }
+
   render() {
     return <Box sx={{
       width: '100%',
@@ -23,7 +34,7 @@ export class CampaignSelector extends React.Component<{}, {}> {
         <Button variant="contained">
           New Campaign
         </Button>
-        <Button variant="contained">
+        <Button variant="contained" onClick={() => { this.loadCampaign() }}>
           Load Campaign
         </Button>
         <IncrementButton />
