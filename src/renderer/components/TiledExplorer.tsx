@@ -5,7 +5,7 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 
 export default function TiledExplorer() {
   return (
-    <ImageList sx={{ width: "100%", gridTemplateColumns: "repeat(auto-fill, 200px) !important" }}>
+    <ImageList sx={{ width: "100%", gridTemplateColumns: "repeat(auto-fill, 200px) !important", paddingLeft: "24px" }}>
       {itemData.map((item) => (
         <ImageListItem key={item.img}>
           <img
