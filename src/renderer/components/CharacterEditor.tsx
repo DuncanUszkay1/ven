@@ -6,25 +6,31 @@ import { Button, Divider, IconButton } from '@mui/material';
 import { Character } from "../App";
 import { ArrowBack } from '@mui/icons-material';
 
-export class CharacterEditor extends React.Component<{}, { character?: Character }> {
-  state = { character: undefined }
+export class CharacterEditor extends React.Component<{}, { selectedCharacter?: Character }> {
+  state = { selectedCharacter: undefined }
 
   constructor(props: {}) {
     super(props);
 
     this.editCharacter = this.editCharacter.bind(this);
+    this.saveCharacter = this.saveCharacter.bind(this);
   }
 
   editCharacter(character: Character) {
-    this.setState({character: character});
+    this.setState({selectedCharacter: character});
+  }
+
+  saveCharacter(character: Character) {
+    console.log("Sending back character info to main thread")
+    console.log(character);
   }
 
   innerContent() {
-    if(this.state.character) {
+    if(this.state.selectedCharacter) {
       return <EditCharacterForm
-      character={this.state.character.name}
-      save={() => { console.log("ay") }}
-      quit={() => { this.setState({character: undefined}) }}
+      character={this.state.selectedCharacter}
+      save={(character: Character) => { this.saveCharacter(character) }}
+      quit={() => { this.setState({selectedCharacter: undefined}) }}
       />
     } else {
       return <TiledExplorer editCharacter={this.editCharacter}/>
