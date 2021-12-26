@@ -1,6 +1,8 @@
 import { CampaignSelector } from './components/CampaignSelector';
 import React from 'react';
 import { Editor } from './components/Editor';
+import { Campaign } from '../model/Campaign';
+export { Campaign } from '../model/Campaign';
 
 declare global {
   interface Window {
@@ -14,10 +16,6 @@ declare global {
 
 export type AppState = {
   campaign?: Campaign
-}
-
-export type Campaign = {
-  name: string;
 }
 
 export class App extends React.Component<{}, AppState> {
@@ -40,7 +38,7 @@ export class App extends React.Component<{}, AppState> {
     if(this.state.campaign === undefined) {
       return <CampaignSelector setCampaign={this.setCampaign} />
     } else {
-      return <Editor /> 
+      return <Editor campaign={this.state.campaign}/> 
     }
   }
 }
