@@ -2,12 +2,14 @@ import * as React from 'react';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
+import EditIcon from '@mui/icons-material/Edit';
+import { IconButton } from '@mui/material';
 
 export default function TiledExplorer() {
   return (
     <ImageList sx={{ width: "100%", gridTemplateColumns: "repeat(auto-fill, 200px) !important", paddingLeft: "24px" }}>
       {itemData.map((item) => (
-        <ImageListItem key={item.img}>
+        <ImageListItem key={item.img} sx={{border: "1px solid grey"}}>
           <img
             src={`${item.img}?w=248&h=372&fit=crop&auto=format`}
             srcSet={`${item.img}?w=248&&h=372&fit=crop&auto=format&dpr=2 2x`}
@@ -16,7 +18,15 @@ export default function TiledExplorer() {
           />
           <ImageListItemBar
             title={item.title}
-            subtitle={<span>by: {item.author}</span>}
+            subtitle={item.author}
+            sx={{paddingLeft:"5px"}}
+            actionIcon={
+              <IconButton
+                aria-label={`info about ${item.title}`}
+              >
+                <EditIcon />
+              </IconButton>
+            }
             position="below"
           />
         </ImageListItem>
