@@ -24,7 +24,7 @@ export function Sidebar(props: { updatePanel: (newValue: number) => void }) {
       value={value}
       onChange={handleChange}
       aria-label="Vertical tabs example"
-      sx={{ borderRight: 1, borderColor: 'divider' }}
+      sx={{ borderRight: 1, borderColor: 'divider', minWidth: "132px" }}
     >
       <Tab label="Overview" {...a11yProps(0)} />
       <Tab label="Characters" {...a11yProps(1)} />
