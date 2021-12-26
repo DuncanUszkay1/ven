@@ -16,10 +16,11 @@ export function TabPanel(props: TabPanelProps) {
       hidden={value !== index}
       id={`vertical-tabpanel-${index}`}
       aria-labelledby={`vertical-tab-${index}`}
+      style={{width: "100%"}}
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 3, width: "100%" }}>
           {children}
         </Box>
       )}
