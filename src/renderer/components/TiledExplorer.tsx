@@ -4,8 +4,9 @@ import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import EditIcon from '@mui/icons-material/Edit';
 import { IconButton } from '@mui/material';
+import { Character } from 'model/Character';
 
-export default function TiledExplorer() {
+export default function TiledExplorer(props: { editCharacter: (campaign: Character) => void}) {
   return (
     <ImageList sx={{ width: "100%", gridTemplateColumns: "repeat(auto-fill, 200px) !important", paddingLeft: "24px" }}>
       {itemData.map((item) => (
@@ -23,6 +24,7 @@ export default function TiledExplorer() {
             actionIcon={
               <IconButton
                 aria-label={`info about ${item.title}`}
+                onClick={() => { props.editCharacter({ name: item.title })}}
               >
                 <EditIcon />
               </IconButton>
