@@ -15,7 +15,7 @@ export default function SelectedListItem() {
   };
 
   return (
-    <Box sx={{ width: '132px', maxWidth: 360, bgcolor: 'background.paper' }}>
+    <Box sx={{ width: '132px', maxWidth: 360, bgcolor: 'background.paper', height: "100%" }}>
       <List component="nav" aria-label="main mailbox folders" sx={{width: '132px', paddingTop: "0px"}}>
         <ListItemButton
           selected={selectedIndex === 0}

@@ -2,14 +2,15 @@ import React from 'react';
 import Stack from '@mui/material/Stack';
 import SelectedList from './SelectableList';
 import TiledExplorer from './TiledExplorer';
-import { Button, Divider, IconButton } from '@mui/material';
+import { Button, Divider, IconButton, Input, TextField } from '@mui/material';
 import { Character } from "../App";
 import { ArrowBack } from '@mui/icons-material';
+import { Box } from '@mui/system';
 
-export class CharacterEditor extends React.Component<{}, { selectedCharacter?: Character }> {
+export class CharacterEditor extends React.Component<{ characters: Character[] }, { selectedCharacter?: Character }> {
   state = { selectedCharacter: undefined }
 
-  constructor(props: {}) {
+  constructor(props: { characters: Character[] }) {
     super(props);
 
     this.editCharacter = this.editCharacter.bind(this);
@@ -33,7 +34,7 @@ export class CharacterEditor extends React.Component<{}, { selectedCharacter?: C
       quit={() => { this.setState({selectedCharacter: undefined}) }}
       />
     } else {
-      return <TiledExplorer editCharacter={this.editCharacter}/>
+      return <TiledExplorer editCharacter={this.editCharacter} characters={this.props.characters} />
     }
   }
 
@@ -52,16 +53,54 @@ class EditCharacterForm extends React.Component<{
   quit: () => void 
 }> {
   render() {
-    return <Stack>
+    console.log(this.props.character)
+    return <Box sx={{width: "100%"}}>
       <IconButton
         aria-label={`Save and return to the character selection menu`}
         onClick={() => { 
-          this.props.save({ name: "saved!" });
+          this.props.save({
+            name: "saved!",
+            img: "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
+            description: "This has been saved",
+            uuid: "1"
+          });
           this.props.quit();
         }}
       >
         <ArrowBack />
       </IconButton>
-    </Stack>
+      <Stack spacing={2} sx={{alignItems: "center", justifyContent: "center", width: "100%", maxWidth: "600px", marginLeft: "10px", marginRight: "10px"}}>
+        <img
+          src={`${this.props.character.img}?w=248&h=372&fit=crop&auto=format`}
+          srcSet={`${this.props.character.img}?w=248&&h=372&fit=crop&auto=format&dpr=2 2x`}
+          alt={this.props.character.name}
+          loading="lazy"
+          style={{marginBottom: "20px", marginTop: "30px"}}
+        />
+        <label htmlFor="contained-button-file">
+          <Input accept="image/*" id="contained-button-file" multiple type="file" />
+        </label>
+        <TextField
+          fullWidth
+          id="outlined-required"
+          label="Name"
+          defaultValue={this.props.character.name}
+        />
+        <TextField
+          fullWidth
+          multiline
+          id="outlined-required"
+          label="Description"
+          defaultValue={this.props.character.description}
+        />
+        <TextField
+          fullWidth
+          multiline
+          id="outlined-required"
+          label="DM Notes"
+          defaultValue={this.props.character.description}
+        />
+      </Stack>
+    </Box>
   }
 }
