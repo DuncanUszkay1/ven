@@ -47,7 +47,7 @@ class MapSection extends React.Component<{
 
 class TileMap extends React.Component<{ tileMapping: Tile[][] }, {
   mapSections: MapSectionData[][],
-  selectionStart: SelectionStart | null,
+  selection: Selection | null,
 }> {
   state = {
     mapSections: this.props.tileMapping.map((row) => row.map((tile) => {
@@ -56,7 +56,7 @@ class TileMap extends React.Component<{ tileMapping: Tile[][] }, {
         selected: false
       }
     })),
-    selectionStart: null
+    selection: null
   }
 
   constructor(props: any) {
@@ -97,55 +97,83 @@ class TileMap extends React.Component<{ tileMapping: Tile[][] }, {
 
   clearSelection() {
     this.setState({
-      selectionStart: null
+      selection: null
     })
   }
 
   startSelection(row: number, column: number) {
-    this.mapRegion(0, 0, MAX_WIDTH, MAX_HEIGHT, (mapSection, _) => {
+    this.setState((state) => {
       return {
-        tile: mapSection.tile,
-        selected: false
-      }
-    })
-    this.setState({
-      selectionStart: {
-        top: row,
-        left: column 
-      },
-    });
-  }
-
-  select(row: number, column: number) {
-    if (this.state.selectionStart) {
-      this.mapRegion(
-        this.state.selectionStart.left,
-        this.state.selectionStart.top, 
-        column,
-        row,
-        (mapSection: MapSectionData, inRegion: boolean) => {
+        mapSections: this.mapRegion(state.mapSections, column, row, column, row, (mapSection, inRegion) => {
           return {
             tile: mapSection.tile,
             selected: inRegion 
           }
+        }),
+        selection: {
+          startRow: row,
+          startColumn: column,
+          endRow: row,
+          endColumn: column 
         }
-      )
-    }
+      }
+    });
   }
 
-  onKeyDown(e: any) {
-    console.log("key down??")
-    if (e.key === 'Enter') {
-      this.mapRegion(0, 0, MAX_WIDTH, MAX_HEIGHT, (mapSection) => {
+  select(row: number, column: number) {
+    if (!this.state.selection) {
+      return;
+    }
+
+    if (this.state.selection!.endRow != row || this.state.selection!.endColumn != column) {
+      this.setState((state) => {
         return {
-          tile: mapSection.selected ? INN_TILE : mapSection.tile,
-          selected: false
+          mapSections: this.mapRegion(
+            state.mapSections,
+            state.selection!.startColumn,
+            state.selection!.startRow, 
+            column,
+            row,
+            (mapSection: MapSectionData, inRegion: boolean) => {
+              return {
+                tile: mapSection.tile,
+                selected: inRegion 
+              }
+            }
+          ),
+          selection: {
+            startRow: state.selection!.startRow,
+            endRow: row,
+            startColumn: state.selection!.startColumn,
+            endColumn: column,
+          } 
         }
       })
     }
   }
 
+  onKeyDown(e: any) {
+    if (e.key === 'Enter') {
+      this.fill();
+    }
+  }
+
+  fill() {
+    this.setState((state) => {
+      return {
+        mapSections: this.mapRegion(state.mapSections, 0, 0, MAX_WIDTH, MAX_HEIGHT, (mapSection) => {
+          return {
+            tile: mapSection.selected ? INN_TILE : mapSection.tile,
+            selected: false
+          }
+        }),
+        selection: null
+      }
+    });
+  }
+
   mapRegion(
+    mapSections: MapSectionData[][],
     startColumn: number,
     startRow: number,
     endColumn: number,
@@ -159,22 +187,19 @@ class TileMap extends React.Component<{ tileMapping: Tile[][] }, {
         columnIndex <= Math.max(startColumn, endColumn) 
     }
 
-    this.setState((state) => {
-      return {
-        mapSections: state.mapSections.map((row, rowIndex) => {
-          return row.map((mapSection, columnIndex) => {
-            return f(mapSection, inSelectionRegion(rowIndex, columnIndex))
-          })
-        }),
-        selectionStart: state.selectionStart
-      }
+    return mapSections.map((row, rowIndex) => {
+      return row.map((mapSection, columnIndex) => {
+        return f(mapSection, inSelectionRegion(rowIndex, columnIndex))
+      })
     })
   }
 }
 
-type SelectionStart = {
-  top: number,
-  left: number,
+type Selection = {
+  startRow: number,
+  startColumn: number,
+  endRow: number,
+  endColumn: number,
 }
 
 export class MapEditor extends React.Component {
