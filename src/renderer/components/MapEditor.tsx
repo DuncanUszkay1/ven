@@ -1,4 +1,4 @@
-import { Grid, Stack } from '@mui/material';
+import { Grid, Stack, TextField, Typography } from '@mui/material';
 import React from 'react';
 import { ReactNode } from 'react';
 
@@ -88,16 +88,25 @@ class TileMap extends React.Component<{ tileMapping: Tile[][] }, {
       })
     });
 
-    return <div style={{
-        display: "grid",
-        gridTemplateColumns: `repeat(${MAX_WIDTH}, ${SECTION_SIZE}px [col-start])`,
-        gridTemplateRows: `repeat(${MAX_WIDTH}, ${SECTION_SIZE}px [col-start])`
-      }}
-      tabIndex={1}
-      onKeyDown={this.onKeyDown}
-    >
-      {mapSections}
-    </div>
+    return <Stack direction="row">
+      <Stack style={{ padding: "5px" }}>
+        <TextField
+          id="standard-required"
+          value={this.state.code}
+          variant="standard"
+        />
+      </Stack>
+      <div style={{
+          display: "grid",
+          gridTemplateColumns: `repeat(${MAX_WIDTH}, ${SECTION_SIZE}px [col-start])`,
+          gridTemplateRows: `repeat(${MAX_WIDTH}, ${SECTION_SIZE}px [col-start])`
+        }}
+        tabIndex={1}
+        onKeyDown={this.onKeyDown}
+      >
+        {mapSections}
+      </div>
+    </Stack>
   }
 
   clearSelection() {
@@ -160,6 +169,16 @@ class TileMap extends React.Component<{ tileMapping: Tile[][] }, {
   onKeyDown(e: any) {
     if (e.key === 'Enter') {
       this.fill();
+    } else if (e.key.length == 1 || e.key === "Backspace") {
+      this.updateCode(e.key);
+    }
+  }
+
+  updateCode(key: string) {
+    if(key === "Backspace") {
+      this.setState({ code: this.state.code.slice(0, -1) });
+    } else {
+      this.setState({ code: this.state.code.concat(key) });
     }
   }
 
