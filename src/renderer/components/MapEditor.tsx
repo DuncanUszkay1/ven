@@ -1,4 +1,5 @@
-import { Grid, Stack, TextField, Typography } from '@mui/material';
+import { Square } from '@mui/icons-material';
+import { Grid, List, ListItemButton, ListItemIcon, ListItemText, Stack, TextField, Typography } from '@mui/material';
 import React from 'react';
 import { ReactNode } from 'react';
 
@@ -17,7 +18,8 @@ type Tile = {
 const GRASS_TILE: Tile = { name: "Grass", color: "#3aeb34", id: 1 }
 const INN_TILE: Tile = { name: "Inn", color: "#4a3b0a", id: 2 }
 const CLOSET_TILE: Tile = { name: "Closet", color: "#4a3b0a", id: 3 }
-const WATER_TILE: Tile = { name: "Inn", color: HIGHLIGHT_COLOR, id: 4 }
+const WATER_TILE: Tile = { name: "Water", color: HIGHLIGHT_COLOR, id: 4 }
+const TILE_PALETTE = [GRASS_TILE, INN_TILE, CLOSET_TILE, WATER_TILE]
 
 type MapSectionData = {
   tile: Tile;
@@ -48,10 +50,11 @@ class MapSection extends React.Component<{
   }
 }
 
-class TileMap extends React.Component<{ tileMapping: Tile[][] }, {
+class TileMap extends React.Component<{ tileMapping: Tile[][], tilePalette: Tile[] }, {
   mapSections: MapSectionData[][],
   selection: Selection | null,
-  code: string
+  code: string,
+  filteredTilePalette: Tile[]
 }> {
   state = {
     mapSections: this.props.tileMapping.map((row) => row.map((tile) => {
@@ -61,7 +64,8 @@ class TileMap extends React.Component<{ tileMapping: Tile[][] }, {
       }
     })),
     selection: null,
-    code: ""
+    code: "",
+    filteredTilePalette: this.props.tilePalette
   }
 
   constructor(props: any) {
@@ -88,6 +92,15 @@ class TileMap extends React.Component<{ tileMapping: Tile[][] }, {
       })
     });
 
+    const tiles = this.state.filteredTilePalette.map((tile) => {
+      return <ListItemButton>
+        <ListItemIcon>
+          <Square sx={{ color: tile.color }}/>
+        </ListItemIcon>
+        <ListItemText primary={`${tile.id}. ${tile.name}`} />
+      </ListItemButton>
+    });
+
     return <Stack direction="row">
       <Stack style={{ padding: "5px" }}>
         <TextField
@@ -95,6 +108,9 @@ class TileMap extends React.Component<{ tileMapping: Tile[][] }, {
           value={this.state.code}
           variant="standard"
         />
+        <List component="nav" aria-label="main mailbox folders">
+          {tiles}
+        </List>
       </Stack>
       <div style={{
           display: "grid",
@@ -169,25 +185,59 @@ class TileMap extends React.Component<{ tileMapping: Tile[][] }, {
   onKeyDown(e: any) {
     if (e.key === 'Enter') {
       this.fill();
+      this.resetCode();
     } else if (e.key.length == 1 || e.key === "Backspace") {
       this.updateCode(e.key);
     }
   }
 
+  resetCode() {
+    this.setState({
+      code: "",
+      filteredTilePalette: this.props.tilePalette
+    });
+  }
+
   updateCode(key: string) {
     if(key === "Backspace") {
-      this.setState({ code: this.state.code.slice(0, -1) });
+      const newCode = this.state.code.slice(0, -1)
+
+      this.setState({
+        code: newCode,
+        filteredTilePalette: this.props.tilePalette.filter((tile) => {
+          return this.tileMatchesCode(tile, newCode); 
+        })
+      });
     } else {
-      this.setState({ code: this.state.code.concat(key) });
+      const newCode = this.state.code.concat(key)
+
+      this.setState({
+        code: newCode,
+        filteredTilePalette: this.state.filteredTilePalette.filter((tile) => {
+          return this.tileMatchesCode(tile, newCode); 
+        })
+      });
     }
   }
 
+  tileMatchesCode(tile: Tile, code: string) {
+    const normalizedTileName = tile.name.toLowerCase();
+    const normalizedCode = code.toLowerCase();
+
+    const nameMatch = normalizedTileName.startsWith(normalizedCode);
+    const idMatch = tile.id.toString().startsWith(normalizedCode);
+
+    return nameMatch || idMatch
+  }
+
   fill() {
+    const selectedTile: Tile | null = this.state.filteredTilePalette.length >= 1 ? this.state.filteredTilePalette[0] : null
+
     this.setState((state) => {
       return {
         mapSections: this.mapRegion(state.mapSections, 0, 0, MAX_WIDTH, MAX_HEIGHT, (mapSection) => {
           return {
-            tile: mapSection.selected ? INN_TILE : mapSection.tile,
+            tile: mapSection.selected && selectedTile ? selectedTile : mapSection.tile,
             selected: false
           }
         }),
@@ -237,7 +287,7 @@ export class MapEditor extends React.Component {
       data.push(row);
     }
 
-    return <TileMap tileMapping={data}/>
+    return <TileMap tileMapping={data} tilePalette={TILE_PALETTE}/>
   }
 
 }
