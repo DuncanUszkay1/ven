@@ -10,11 +10,14 @@ const HIGHLIGHT_BOX_COLOR = "#00c2ed"
 
 type Tile = {
   name: string,
-  color: string
+  color: string,
+  id: number
 }
 
-const GRASS_TILE: Tile = { name: "Grass", color: "#3aeb34" }
-const INN_TILE: Tile = { name: "Inn", color: "#4a3b0a" }
+const GRASS_TILE: Tile = { name: "Grass", color: "#3aeb34", id: 1 }
+const INN_TILE: Tile = { name: "Inn", color: "#4a3b0a", id: 2 }
+const CLOSET_TILE: Tile = { name: "Closet", color: "#4a3b0a", id: 3 }
+const WATER_TILE: Tile = { name: "Inn", color: HIGHLIGHT_COLOR, id: 4 }
 
 type MapSectionData = {
   tile: Tile;
@@ -35,19 +38,20 @@ class MapSection extends React.Component<{
         width: `${SECTION_SIZE}px`,
         height: `${SECTION_SIZE}px`,
         backgroundColor: this.props.selected ? HIGHLIGHT_COLOR : this.props.tile.color,
-        border: this.props.selected ? `${HIGHLIGHT_BOX_COLOR} solid 2px` : "none",
+        border: `${this.props.selected ? HIGHLIGHT_BOX_COLOR : "black"} solid 2px`,
         userSelect: "none"
       }}
       onMouseUp={this.props.onMouseUp}
       onMouseDown={() => this.props.onMouseDown(this.props.row, this.props.column)}
       onMouseMove={() => this.props.onMouseMove(this.props.row, this.props.column)}
-    >{this.props.tile.name[0]}</div>
+    ></div>
   }
 }
 
 class TileMap extends React.Component<{ tileMapping: Tile[][] }, {
   mapSections: MapSectionData[][],
   selection: Selection | null,
+  code: string
 }> {
   state = {
     mapSections: this.props.tileMapping.map((row) => row.map((tile) => {
@@ -56,7 +60,8 @@ class TileMap extends React.Component<{ tileMapping: Tile[][] }, {
         selected: false
       }
     })),
-    selection: null
+    selection: null,
+    code: ""
   }
 
   constructor(props: any) {
