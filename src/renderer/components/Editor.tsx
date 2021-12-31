@@ -6,6 +6,7 @@ import { Campaign } from '../App';
 import { Sidebar } from './Sidebar';
 import { TabPanel } from './TabPanel';
 import { CharacterEditor } from './CharacterEditor';
+import { MapEditor } from './MapEditor';
 
 export class Editor extends React.Component<{ campaign: Campaign }, { section: number }> {
   state = { section: 0 } 
@@ -39,7 +40,7 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
           Items content here
         </TabPanel>
         <TabPanel value={this.state.section} index={3}>
-          Maps content here
+          <MapEditor />
         </TabPanel>
         <TabPanel value={this.state.section} index={4}>
           Files content here
