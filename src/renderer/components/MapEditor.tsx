@@ -50,7 +50,7 @@ class MapSection extends React.Component<{
   }
 }
 
-class TileMap extends React.Component<{ tileMapping: Tile[][], tilePalette: Tile[] }, {
+class TileMap extends React.Component<{ tileMapping: Tile[][], tilePalette: Tile[], editTile: (tile: Tile) => void }, {
   mapSections: MapSectionData[][],
   selection: Selection | null,
   code: string,
@@ -93,7 +93,7 @@ class TileMap extends React.Component<{ tileMapping: Tile[][], tilePalette: Tile
     });
 
     const tiles = this.state.filteredTilePalette.map((tile) => {
-      return <ListItemButton>
+      return <ListItemButton onClick={() => { this.props.editTile(tile) }}>
         <ListItemIcon>
           <Square sx={{ color: tile.color }}/>
         </ListItemIcon>
@@ -276,7 +276,19 @@ type Selection = {
   endColumn: number,
 }
 
-export class MapEditor extends React.Component {
+export class MapEditor extends React.Component<{}, { selectedTile: Tile | null }> {
+  state = { selectedTile: null }
+
+  constructor(props: {}) {
+    super(props);
+
+    this.editTile = this.editTile.bind(this);
+  }
+
+  editTile(tile: Tile) {
+    this.setState({ selectedTile: tile })
+  }
+
   render() {
     var data: Tile[][] = []
     for(var i = 0; i < MAX_WIDTH; i++) {
@@ -286,8 +298,11 @@ export class MapEditor extends React.Component {
       }
       data.push(row);
     }
-
-    return <TileMap tileMapping={data} tilePalette={TILE_PALETTE}/>
+    if(this.state.selectedTile) {
+      return <p>editing tile {this.state.selectedTile.name}</p>
+    } else {
+      return <TileMap tileMapping={data} tilePalette={TILE_PALETTE} editTile={this.editTile}/>
+    }
   }
 
 }
