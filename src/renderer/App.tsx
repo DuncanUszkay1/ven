@@ -5,6 +5,7 @@ import { Campaign } from '../model/Campaign';
 export { Campaign } from '../model/Campaign';
 export { Character } from '../model/Character';
 export { Tile } from '../model/Tile';
+export { Background } from '../model/Background';
 
 declare global {
   interface Window {
