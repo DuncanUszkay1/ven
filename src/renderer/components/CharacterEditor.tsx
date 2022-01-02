@@ -53,7 +53,6 @@ class EditCharacterForm extends React.Component<{
   quit: () => void 
 }> {
   render() {
-    console.log(this.props.character)
     return <Box sx={{width: "100%"}}>
       <IconButton
         aria-label={`Save and return to the character selection menu`}

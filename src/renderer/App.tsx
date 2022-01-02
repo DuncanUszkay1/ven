@@ -4,6 +4,7 @@ import { Editor } from './components/Editor';
 import { Campaign } from '../model/Campaign';
 export { Campaign } from '../model/Campaign';
 export { Character } from '../model/Character';
+export { Tile } from '../model/Tile';
 
 declare global {
   interface Window {
