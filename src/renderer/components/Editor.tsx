@@ -7,6 +7,7 @@ import { Sidebar } from './Sidebar';
 import { TabPanel } from './TabPanel';
 import { CharacterEditor } from './CharacterEditor';
 import { MapEditor } from './MapEditor';
+import { Character } from '../App';
 
 export class Editor extends React.Component<{ campaign: Campaign }, { section: number }> {
   state = { section: 0 } 
@@ -40,14 +41,23 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
           Items content here
         </TabPanel>
         <TabPanel value={this.state.section} index={3}>
-          <MapEditor />
+          <MapEditor/>
         </TabPanel>
       </Box>
     </Stack> 
   }
 };
 
-var characters = [
+const backgrounds: Background[] = [
+  { name: "Inn 1", img: "https://cdnb.artstation.com/p/assets/images/images/023/527/051/large/mario-v-popup-11.jpg?1579513575" },
+  { name: "Inn 2", img: "https://cdnb.artstation.com/p/assets/images/images/023/527/051/large/mario-v-popup-11.jpg?1579513575" },
+  { name: "Inn 3", img: "https://cdnb.artstation.com/p/assets/images/images/023/527/051/large/mario-v-popup-11.jpg?1579513575" },
+  { name: "Grass", img: "https://hgtvhome.sndimg.com/content/dam/images/hgtv/fullset/2012/8/10/0/HMYGD211_Galloway-backyard-3-AFTER-2517-ret_s4x3.jpg.rend.hgtvcom.966.725.suffix/1400977751663.jpeg" }
+]
+
+var characters = new Map<string, Character[]>();
+
+characters.set("Cool Guys", [
   {
     img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
     name: 'Breakfast',
@@ -120,4 +130,25 @@ var characters = [
     description: '@southside_customs',
     uuid: "12"
   },
-];
+]);
+
+characters.set("Lame Guys", [
+  {
+    img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
+    name: 'Tomato basil',
+    description: '@shelleypauls',
+    uuid: "10"
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
+    name: 'Sea star',
+    description: '@peterlaster',
+    uuid: "11"
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
+    name: 'Bike',
+    description: '@southside_customs',
+    uuid: "12"
+  },
+])

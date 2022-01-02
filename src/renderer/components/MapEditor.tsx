@@ -14,7 +14,7 @@ const CLOSET_TILE: Tile = { name: "Closet", color: "#4a3b0a", id: 3, description
 const WATER_TILE: Tile = { name: "Water", color: "#00ffee", id: 4, description: "Feels nice to touch!", notes: "Grass is slippery" }
 const TILE_PALETTE = [GRASS_TILE, INN_TILE, CLOSET_TILE, WATER_TILE]
 
-export class MapEditor extends React.Component<{ backgrounds: Background }, { selectedTile: Tile | null, tabValue: number }> {
+export class MapEditor extends React.Component<{}, { selectedTile: Tile | null, tabValue: number }> {
   state = { selectedTile: null, tabValue: 0 }
 
   constructor(props: any) {
@@ -89,7 +89,12 @@ export class MapEditor extends React.Component<{ backgrounds: Background }, { se
 
   render() {
     return <Stack direction="row" sx={{width: "100%"}}>
-      <SelectedList items={["Joe's Inn", "Hell"]}/>  
+      <SelectedList
+        items={["Joe's Inn", "Hell"]}
+        selected={"Joe's Inn"}
+        select={() => {}}
+        new={() => {}}
+      />  
       <Divider orientation="vertical" flexItem />
       {this.innerContent()} 
     </Stack> 

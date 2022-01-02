@@ -7,14 +7,18 @@ import { Character } from "../App";
 import { ArrowBack } from '@mui/icons-material';
 import { Box } from '@mui/system';
 
-export class CharacterEditor extends React.Component<{ characters: Character[] }, { selectedCharacter?: Character }> {
-  state = { selectedCharacter: undefined }
+export class CharacterEditor extends React.Component<
+  { characters: Map<string, Character[]> },
+  { selectedCharacter?: Character, folder: string }
+> {
+  state = { selectedCharacter: undefined, folder: this.props.characters.keys().next().value }
 
   constructor(props: { characters: Character[] }) {
     super(props);
 
     this.editCharacter = this.editCharacter.bind(this);
     this.saveCharacter = this.saveCharacter.bind(this);
+    this.setFolder = this.setFolder.bind(this);
   }
 
   editCharacter(character: Character) {
@@ -29,18 +33,29 @@ export class CharacterEditor extends React.Component<{ characters: Character[] }
   innerContent() {
     if(this.state.selectedCharacter) {
       return <EditCharacterForm
-      character={this.state.selectedCharacter}
-      save={(character: Character) => { this.saveCharacter(character) }}
-      quit={() => { this.setState({selectedCharacter: undefined}) }}
+        character={this.state.selectedCharacter}
+        save={(character: Character) => { this.saveCharacter(character) }}
+        quit={() => { this.setState({selectedCharacter: undefined}) }}
       />
     } else {
-      return <TiledExplorer editCharacter={this.editCharacter} characters={this.props.characters} />
+      return <TiledExplorer 
+        editCharacter={this.editCharacter}
+        characters={this.props.characters.get(this.state.folder) || []}
+      />
     }
+  }
+
+  setFolder(folder: string) {
+    this.setState({ folder: folder })
   }
 
   render() {
     return <Stack direction="row" sx={{width: "100%"}}>
-      <SelectedList items={["Kitchen Items", "Weapons"]}/>  
+      <SelectedList
+        items={Array.from(this.props.characters.keys())}
+        selected={this.state.folder}
+        select={this.setFolder}
+        new={() => {}}/>  
       <Divider orientation="vertical" flexItem />
       {this.innerContent()} 
     </Stack> 
