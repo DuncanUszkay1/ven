@@ -1,6 +1,6 @@
 import React from 'react';
 import Stack from '@mui/material/Stack';
-import SelectedList from './SelectableList';
+import { SelectedList } from './SelectableList';
 import TiledExplorer from './TiledExplorer';
 import { Button, Divider, IconButton, Input, TextField } from '@mui/material';
 import { Character } from "../App";
@@ -40,7 +40,7 @@ export class CharacterEditor extends React.Component<{ characters: Character[] }
 
   render() {
     return <Stack direction="row" sx={{width: "100%"}}>
-      <SelectedList />  
+      <SelectedList items={["Kitchen Items", "Weapons"]}/>  
       <Divider orientation="vertical" flexItem />
       {this.innerContent()} 
     </Stack> 

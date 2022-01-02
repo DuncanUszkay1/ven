@@ -42,9 +42,6 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
         <TabPanel value={this.state.section} index={3}>
           <MapEditor />
         </TabPanel>
-        <TabPanel value={this.state.section} index={4}>
-          Files content here
-        </TabPanel>
       </Box>
     </Stack> 
   }

@@ -30,7 +30,6 @@ export function Sidebar(props: { updatePanel: (newValue: number) => void }) {
       <Tab label="Characters" {...a11yProps(1)} />
       <Tab label="Items" {...a11yProps(2)} />
       <Tab label="Maps" {...a11yProps(3)} />
-      <Tab label="Files" {...a11yProps(4)} />
     </Tabs>
   );
 }

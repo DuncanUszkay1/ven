@@ -3,9 +3,10 @@ import { TileMap } from './TileMap';
 import { TileForm } from './TileForm';
 import { Background, Tile } from '../App';
 import { Box } from '@mui/system';
-import { Tab, Tabs } from '@mui/material';
+import { Divider, Stack, Tab, Tabs } from '@mui/material';
 import { TabPanel } from './TabPanel';
 import { BackgroundEditor } from './BackgroundEditor';
+import { SelectedList } from './SelectableList';
 
 const GRASS_TILE: Tile = { name: "Grass", color: "#3aeb34", id: 1, description: "Feels nice to touch!", notes: "Grass is slippery" }
 const INN_TILE: Tile = { name: "Inn", color: "#4a3b0a", id: 2, description: "Feels nice to touch!", notes: "Grass is slippery" }
@@ -69,7 +70,7 @@ export class MapEditor extends React.Component<{ backgrounds: Background }, { se
     return <BackgroundEditor backgrounds={backgrounds} deleteBackground={(background) => { console.log(background)}}/> 
   }
 
-  render() {
+  innerContent() {
     return <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={this.state.tabValue} onChange={this.handleTabEvent} aria-label="basic tabs example">
@@ -84,5 +85,13 @@ export class MapEditor extends React.Component<{ backgrounds: Background }, { se
         {this.mainWindow()}
       </TabPanel>
     </Box>
+  }
+
+  render() {
+    return <Stack direction="row" sx={{width: "100%"}}>
+      <SelectedList items={["Joe's Inn", "Hell"]}/>  
+      <Divider orientation="vertical" flexItem />
+      {this.innerContent()} 
+    </Stack> 
   }
 }
