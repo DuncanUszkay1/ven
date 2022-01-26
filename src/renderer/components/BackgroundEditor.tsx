@@ -1,10 +1,6 @@
 import React from 'react';
-import Stack from '@mui/material/Stack';
-import SelectedList from './SelectableList';
-import { Button, Divider, IconButton, ImageList, ImageListItem, ImageListItemBar, Input, TextField } from '@mui/material';
-import { Background, Tile } from "../App";
-import { ArrowBack } from '@mui/icons-material';
-import { Box } from '@mui/system';
+import { IconButton, ImageList, ImageListItem, ImageListItemBar } from '@mui/material';
+import { Background } from "../App";
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export class BackgroundEditor extends React.Component<{ backgrounds: Background[], deleteBackground: (background: Background) => void }> {
