@@ -7,15 +7,14 @@ import { Divider, Stack, Tab, Tabs } from '@mui/material';
 import { TabPanel } from './TabPanel';
 import { BackgroundEditor } from './BackgroundEditor';
 import { SelectedList } from './SelectableList';
+import { VenMap } from 'model/Campaign';
 
-const GRASS_TILE: Tile = { name: "Grass", color: "#3aeb34", id: 1, description: "Feels nice to touch!", notes: "Grass is slippery" }
-const INN_TILE: Tile = { name: "Inn", color: "#4a3b0a", id: 2, description: "Feels nice to touch!", notes: "Grass is slippery" }
-const CLOSET_TILE: Tile = { name: "Closet", color: "#4a3b0a", id: 3, description: "Feels nice to touch!", notes: "Grass is slippery" }
-const WATER_TILE: Tile = { name: "Water", color: "#00ffee", id: 4, description: "Feels nice to touch!", notes: "Grass is slippery" }
-const TILE_PALETTE = [GRASS_TILE, INN_TILE, CLOSET_TILE, WATER_TILE]
 
-export class MapEditor extends React.Component<{}, { selectedTile: Tile | null, tabValue: number }> {
-  state = { selectedTile: null, tabValue: 0 }
+export class MapEditor extends React.Component<
+  { maps: Map<string, VenMap> },
+  { selectedTile: Tile | null, tabValue: number, selectedMap: string }
+> {
+  state = { selectedTile: null, tabValue: 0, selectedMap: this.props.maps.keys().next().value }
 
   constructor(props: any) {
     super(props);
@@ -24,6 +23,7 @@ export class MapEditor extends React.Component<{}, { selectedTile: Tile | null, 
     this.saveTile = this.saveTile.bind(this);
     this.closeTile = this.closeTile.bind(this);
     this.handleTabEvent = this.handleTabEvent.bind(this);
+    this.selectMap = this.selectMap.bind(this);
   }
 
   editTile(tile: Tile) {
@@ -43,31 +43,12 @@ export class MapEditor extends React.Component<{}, { selectedTile: Tile | null, 
     this.setState({ tabValue: newValue })
   }
 
-  mainWindow() {
-    var data: Tile[][] = []
-    for(var i = 0; i < 30; i++) {
-      var row = []
-      for(var j = 0; j < 30; j++) {
-        row.push(GRASS_TILE)
-      }
-      data.push(row);
-    }
-
-    if(this.state.selectedTile) {
-      return <TileForm tile={this.state.selectedTile} save={this.saveTile} quit={this.closeTile}/> 
-    } else {
-      return <TileMap tileMapping={data} tilePalette={TILE_PALETTE} editTile={this.editTile}/>
-    }
+  selectedMap() {
+    return this.props.maps.get(this.state.selectedMap)!
   }
 
-  backgroundEditor() {
-    const backgrounds: Background[] = [
-      { name: "Inn 1", img: "https://cdnb.artstation.com/p/assets/images/images/023/527/051/large/mario-v-popup-11.jpg?1579513575" },
-      { name: "Inn 2", img: "https://cdnb.artstation.com/p/assets/images/images/023/527/051/large/mario-v-popup-11.jpg?1579513575" },
-      { name: "Inn 3", img: "https://cdnb.artstation.com/p/assets/images/images/023/527/051/large/mario-v-popup-11.jpg?1579513575" },
-      { name: "Grass", img: "https://hgtvhome.sndimg.com/content/dam/images/hgtv/fullset/2012/8/10/0/HMYGD211_Galloway-backyard-3-AFTER-2517-ret_s4x3.jpg.rend.hgtvcom.966.725.suffix/1400977751663.jpeg" }
-    ]
-    return <BackgroundEditor backgrounds={backgrounds} deleteBackground={(background) => { console.log(background)}}/> 
+  selectMap(mapName: string) {
+    this.setState({selectedMap: mapName})
   }
 
   innerContent() {
@@ -79,10 +60,14 @@ export class MapEditor extends React.Component<{}, { selectedTile: Tile | null, 
         </Tabs>
       </Box>
       <TabPanel value={this.state.tabValue} index={0}>
-        {this.backgroundEditor()}
+        <BackgroundEditor backgrounds={this.selectedMap().backgrounds} deleteBackground={(background) => { console.log(background)}}/>
       </TabPanel>
       <TabPanel value={this.state.tabValue} index={1}>
-        {this.mainWindow()}
+        {
+          this.state.selectedTile ?
+            <TileForm tile={this.state.selectedTile} save={this.saveTile} quit={this.closeTile}/> :
+            <TileMap tileMapping={this.selectedMap().tiles} tilePalette={this.selectedMap().tilePalette} editTile={this.editTile} key={this.selectedMap().name}/>
+        }
       </TabPanel>
     </Box>
   }
@@ -90,9 +75,9 @@ export class MapEditor extends React.Component<{}, { selectedTile: Tile | null, 
   render() {
     return <Stack direction="row" sx={{width: "100%"}}>
       <SelectedList
-        items={["Joe's Inn", "Hell"]}
-        selected={"Joe's Inn"}
-        select={() => {}}
+        items={Array.from(this.props.maps.keys())}
+        selected={this.state.selectedMap}
+        select={this.selectMap}
         new={() => {}}
       />  
       <Divider orientation="vertical" flexItem />

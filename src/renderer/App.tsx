@@ -2,20 +2,7 @@ import { CampaignSelector } from './components/CampaignSelector';
 import React from 'react';
 import { Editor } from './components/Editor';
 import { Campaign } from '../model/Campaign';
-export { Campaign } from '../model/Campaign';
-export { Character } from '../model/Character';
-export { Tile } from '../model/Tile';
-export { Background } from '../model/Background';
-
-declare global {
-  interface Window {
-    electron: {
-      ipcRenderer: {
-        myPing: () => void;
-      }
-    }
-  }
-}
+export { Campaign, Character, Tile, VOID_TILE, Background } from '../model/Campaign';
 
 export type AppState = {
   campaign?: Campaign

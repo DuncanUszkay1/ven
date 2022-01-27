@@ -11,13 +11,13 @@ export class BackgroundEditor extends React.Component<{ backgrounds: Background[
   }
 
   deleteBackground(background: Background) {
-    this.setState({selectedBackground: background});
+    // this.setState({selectedBackground: background});
   }
 
   render() {
     return <ImageList sx={{ width: "100%", gridTemplateColumns: "repeat(auto-fill, 200px) !important", paddingLeft: "24px" }}>
       {this.props.backgrounds.map((item) => (
-        <ImageListItem key={item.img} sx={{border: "1px solid grey"}}>
+        <ImageListItem key={item.name} sx={{border: "1px solid grey"}}>
           <img
             src={`${item.img}?w=248&h=372&fit=crop&auto=format`}
             srcSet={`${item.img}?w=248&&h=372&fit=crop&auto=format&dpr=2 2x`}

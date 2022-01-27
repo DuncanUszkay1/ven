@@ -254,7 +254,7 @@ class MapSection extends React.Component<{
         width: `${SECTION_SIZE}px`,
         height: `${SECTION_SIZE}px`,
         backgroundColor: this.props.selected ? HIGHLIGHT_COLOR : this.props.tile.color,
-        border: `${this.props.selected ? HIGHLIGHT_BOX_COLOR : "black"} solid 2px`,
+        border: `${this.props.selected ? HIGHLIGHT_BOX_COLOR : "grey"} solid 1px`,
         userSelect: "none"
       }}
       onMouseUp={this.props.onMouseUp}
