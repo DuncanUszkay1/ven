@@ -9,23 +9,34 @@ import { CharacterEditor } from './CharacterEditor';
 import { MapEditor } from './MapEditor';
 import { Character } from '../App';
 
-export class Editor extends React.Component<{ campaign: Campaign }, { section: number }> {
-  state = { section: 0 } 
+export class Editor extends React.Component<{ campaign: Campaign }, { section: number, draft: Campaign }> {
+  state = { section: 0, draft: this.props.campaign } 
 
   constructor(props: { campaign: Campaign }) {
     super(props);
 
     this.updatePanel = this.updatePanel.bind(this);
+    this.saveCharacter = this.saveCharacter.bind(this);
   }
 
   updatePanel(newValue: number) {
     this.setState({ section: newValue })
   }
 
+  saveCharacter(character: Character, folder: string) {
+    const draft = this.state.draft;
+    const draftCharacters: Character[] = draft.characters.get(folder)!;
+    const updatedCharacters = draft.characters.set(folder, draftCharacters.map((draft_character) => {
+      return draft_character.uuid == character.uuid ? character : draft_character
+    }))
+
+    this.setState({ draft: { ...draft, characters: updatedCharacters }})
+  }
+
   render() {
     return <Stack sx={{ height: "100%" }}>
       <Box sx={{ width: "100%", borderBottom: "1px solid grey", padding: "10px" }}>
-        <Typography variant="button">{this.props.campaign.name}</Typography>
+        <Typography variant="button">{this.state.draft.name}</Typography>
       </Box>
       <Box
         sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex' }}
@@ -35,13 +46,13 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
           Overview content here
         </TabPanel>
         <TabPanel value={this.state.section} index={1}>
-          <CharacterEditor characters={this.props.campaign.characters} /> 
+          <CharacterEditor characters={this.state.draft.characters} saveCharacter={this.saveCharacter} /> 
         </TabPanel>
         <TabPanel value={this.state.section} index={2}>
           Items content here
         </TabPanel>
         <TabPanel value={this.state.section} index={3}>
-          <MapEditor maps={this.props.campaign.maps} />
+          <MapEditor maps={this.state.draft.maps} />
         </TabPanel>
       </Box>
     </Stack> 

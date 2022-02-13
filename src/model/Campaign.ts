@@ -7,6 +7,7 @@ export type Campaign = {
 export type Character = {
   name: string;
   description: string;
+  dmNotes: string
   img: string;
   uuid: string;
 }

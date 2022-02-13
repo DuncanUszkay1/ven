@@ -8,12 +8,15 @@ import { ArrowBack } from '@mui/icons-material';
 import { Box } from '@mui/system';
 
 export class CharacterEditor extends React.Component<
-  { characters: Map<string, Character[]> },
+  {
+    characters: Map<string, Character[]>,
+    saveCharacter: (character: Character, characterFolder: string) => void,
+  },
   { selectedCharacter?: Character, folder: string }
 > {
   state = { selectedCharacter: undefined, folder: this.props.characters.keys().next().value }
 
-  constructor(props: { characters: Character[] }) {
+  constructor(props: any) {
     super(props);
 
     this.editCharacter = this.editCharacter.bind(this);
@@ -26,8 +29,7 @@ export class CharacterEditor extends React.Component<
   }
 
   saveCharacter(character: Character) {
-    console.log("Sending back character info to main thread")
-    console.log(character);
+    this.props.saveCharacter(character, this.state.folder)
   }
 
   innerContent() {
@@ -55,6 +57,7 @@ export class CharacterEditor extends React.Component<
         items={Array.from(this.props.characters.keys())}
         selected={this.state.folder}
         select={this.setFolder}
+        key={this.state.folder}
         new={() => {}}/>  
       <Divider orientation="vertical" flexItem />
       {this.innerContent()} 
@@ -66,18 +69,40 @@ class EditCharacterForm extends React.Component<{
   character: Character, 
   save: (character: Character) => void,
   quit: () => void 
-}> {
+}, {character: Character}> {
+  state = { character: this.props.character }
+
+  constructor(props: any) {
+    super(props);
+
+    this.editName = this.editName.bind(this);
+    this.editDescription = this.editDescription.bind(this);
+    this.editDMNotes = this.editDMNotes.bind(this);
+    this.editImg = this.editImg.bind(this);
+  }
+
+  editName(event: any) {
+    this.setState({character: { ...this.state.character, name: event.target.value }})
+  }
+
+  editDescription(event: any) {
+    this.setState({character: { ...this.state.character, description: event.target.value }})
+  }
+
+  editDMNotes(event: any) {
+    this.setState({character: { ...this.state.character, dmNotes: event.target.value }})
+  }
+
+  editImg(event: any) {
+    this.setState({character: { ...this.state.character, img: event.target.value }})
+  }
+
   render() {
     return <Box sx={{width: "100%"}}>
       <IconButton
         aria-label={`Save and return to the character selection menu`}
         onClick={() => { 
-          this.props.save({
-            name: "saved!",
-            img: "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
-            description: "This has been saved",
-            uuid: "1"
-          });
+          this.props.save(this.state.character);
           this.props.quit();
         }}
       >
@@ -85,34 +110,44 @@ class EditCharacterForm extends React.Component<{
       </IconButton>
       <Stack spacing={2} sx={{alignItems: "center", justifyContent: "center", width: "100%", maxWidth: "600px", marginLeft: "10px", marginRight: "10px"}}>
         <img
-          src={`${this.props.character.img}?w=248&h=372&fit=crop&auto=format`}
-          srcSet={`${this.props.character.img}?w=248&&h=372&fit=crop&auto=format&dpr=2 2x`}
-          alt={this.props.character.name}
+          src={`${this.state.character.img}?w=248&h=372&fit=crop&auto=format`}
+          srcSet={`${this.state.character.img}?w=248&&h=372&fit=crop&auto=format&dpr=2 2x`}
+          alt={this.state.character.name}
           loading="lazy"
-          style={{marginBottom: "20px", marginTop: "30px"}}
+          style={{marginBottom: "20px", marginTop: "30px", objectFit: "cover"}}
+          width="249"
+          height="372"
         />
-        <label htmlFor="contained-button-file">
-          <Input accept="image/*" id="contained-button-file" multiple type="file" />
-        </label>
+        <TextField
+          fullWidth
+          id="outlined-required"
+          label="Image URL"
+          defaultValue={this.state.character.img}
+          onChange={this.editImg}
+        />
+
         <TextField
           fullWidth
           id="outlined-required"
           label="Name"
-          defaultValue={this.props.character.name}
+          defaultValue={this.state.character.name}
+          onChange={this.editName}
         />
         <TextField
           fullWidth
           multiline
           id="outlined-required"
           label="Description"
-          defaultValue={this.props.character.description}
+          defaultValue={this.state.character.description}
+          onChange={this.editDescription}
         />
         <TextField
           fullWidth
           multiline
           id="outlined-required"
           label="DM Notes"
-          defaultValue={this.props.character.description}
+          defaultValue={this.state.character.description}
+          onChange={this.editDMNotes}
         />
       </Stack>
     </Box>

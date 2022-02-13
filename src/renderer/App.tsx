@@ -24,6 +24,10 @@ export class App extends React.Component<{}, AppState> {
     }));
   }
 
+  saveCampaign(campaign: Campaign) {
+    console.log("saving campaign")
+  }
+
   render() {
     if(this.state.campaign === undefined) {
       return <CampaignSelector setCampaign={this.setCampaign} />

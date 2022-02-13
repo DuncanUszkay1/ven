@@ -4,12 +4,18 @@ import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import EditIcon from '@mui/icons-material/Edit';
 import { IconButton } from '@mui/material';
-import { Character } from 'model/Character';
+import { Character } from 'model/Campaign';
 
 export default function TiledExplorer(props: {
   editCharacter: (campaign: Character) => void,
   characters: Character[]
 }) {
+  const subtitle = (item: Character) => {
+    if(item.dmNotes.length > 0) {
+      return item.dmNotes  
+    }
+    return "No DM Notes"
+  }
   return (
     <ImageList sx={{ width: "100%", gridTemplateColumns: "repeat(auto-fill, 200px) !important", paddingLeft: "24px" }}>
       {props.characters.map((item) => (
@@ -22,7 +28,7 @@ export default function TiledExplorer(props: {
           />
           <ImageListItemBar
             title={item.name}
-            subtitle={item.description.substring(0,20)}
+            subtitle={subtitle(item)}
             sx={{paddingLeft:"5px"}}
             actionIcon={
               <IconButton

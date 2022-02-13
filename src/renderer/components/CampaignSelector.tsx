@@ -41,73 +41,85 @@ const DUMMY_CAMPAIGN: Campaign = {
         img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
         name: 'Breakfast',
         description: '@bkristastucchio',
-        uuid: "1"
+        uuid: "1",
+        dmNotes: ""
       },
       {
         img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
         name: 'Burger',
         description: '@rollelflex_graphy726',
-        uuid: "2"
+        uuid: "2",
+        dmNotes: ""
       },
       {
         img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
         name: 'Camera',
         description: '@helloimnik',
-        uuid: "3"
+        uuid: "3",
+        dmNotes: ""
       },
       {
         img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
         name: 'Coffee',
         description: '@nolanissac',
-        uuid: "4"
+        uuid: "4",
+        dmNotes: ""
       },
       {
         img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
         name: 'Hats',
         description: '@hjrc33',
-        uuid: "5"
+        uuid: "5",
+        dmNotes: ""
       },
       {
         img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
         name: 'Honey',
         description: '@arwinneil',
-        uuid: "6"
+        uuid: "6",
+        dmNotes: ""
       },
       {
         img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
         name: 'Basketball',
         description: '@tjdragotta',
-        uuid: "7"
+        uuid: "7",
+        dmNotes: ""
       },
       {
         img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
         name: 'Fern',
         description: '@katie_wasserman',
-        uuid: "8"
+        uuid: "8",
+        dmNotes: ""
       },
       {
         img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
         name: 'Mushrooms',
         description: '@silverdalex',
-        uuid: "9"
+        uuid: "9",
+        dmNotes: ""
       },
       {
         img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
         name: 'Tomato basil',
         description: '@shelleypauls',
-        uuid: "10"
+        uuid: "10",
+        dmNotes: ""
       },
       {
         img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
         name: 'Sea star',
         description: '@peterlaster',
-        uuid: "11"
+        uuid: "11",
+        dmNotes: ""
       },
       {
         img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
         name: 'Bike',
         description: '@southside_customs',
-        uuid: "12"
+        uuid: "12",
+        dmNotes: ""
       }
     ]],
     ["Lame Guys", [
@@ -115,19 +127,22 @@ const DUMMY_CAMPAIGN: Campaign = {
         img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
         name: 'Tomato basil',
         description: '@shelleypauls',
-        uuid: "10"
+        uuid: "10",
+        dmNotes: ""
       },
       {
         img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
         name: 'Sea star',
         description: '@peterlaster',
-        uuid: "11"
+        uuid: "11",
+        dmNotes: ""
       },
       {
         img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
         name: 'Bike',
         description: '@southside_customs',
-        uuid: "12"
+        uuid: "12",
+        dmNotes: ""
       },
     ]]
     ]
