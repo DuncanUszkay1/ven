@@ -11,7 +11,7 @@ import { VenMap } from 'model/Campaign';
 
 
 export class MapEditor extends React.Component<
-  { maps: Map<string, VenMap> },
+  { maps: Map<string, VenMap>, saveMap: (map: VenMap) => void },
   { selectedTile: Tile | null, tabValue: number, selectedMap: string }
 > {
   state = { selectedTile: null, tabValue: 0, selectedMap: this.props.maps.keys().next().value }
@@ -24,6 +24,7 @@ export class MapEditor extends React.Component<
     this.closeTile = this.closeTile.bind(this);
     this.handleTabEvent = this.handleTabEvent.bind(this);
     this.selectMap = this.selectMap.bind(this);
+    this.updateTileMap = this.updateTileMap.bind(this);
   }
 
   editTile(tile: Tile) {
@@ -51,6 +52,13 @@ export class MapEditor extends React.Component<
     this.setState({selectedMap: mapName})
   }
 
+  updateTileMap(tileMap: Tile[][]) {
+    console.log("updating tile map in map editor...")
+    const newMap: VenMap = {...this.selectedMap(), tiles: tileMap}
+
+    this.props.saveMap(newMap)
+  }
+
   innerContent() {
     return <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -66,7 +74,13 @@ export class MapEditor extends React.Component<
         {
           this.state.selectedTile ?
             <TileForm tile={this.state.selectedTile} save={this.saveTile} quit={this.closeTile}/> :
-            <TileMap tileMapping={this.selectedMap().tiles} tilePalette={this.selectedMap().tilePalette} editTile={this.editTile} key={this.selectedMap().name}/>
+            <TileMap
+              tileMapping={this.selectedMap().tiles}
+              tilePalette={this.selectedMap().tilePalette}
+              editTile={this.editTile}
+              key={this.selectedMap().name}
+              saveTileMapping={this.updateTileMap}
+            />
         }
       </TabPanel>
     </Box>

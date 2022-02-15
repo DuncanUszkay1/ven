@@ -8,6 +8,7 @@ import { TabPanel } from './TabPanel';
 import { CharacterEditor } from './CharacterEditor';
 import { MapEditor } from './MapEditor';
 import { Character } from '../App';
+import { VenMap } from 'model/Campaign';
 
 export class Editor extends React.Component<{ campaign: Campaign }, { section: number, draft: Campaign }> {
   state = { section: 0, draft: this.props.campaign } 
@@ -17,6 +18,7 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
 
     this.updatePanel = this.updatePanel.bind(this);
     this.saveCharacter = this.saveCharacter.bind(this);
+    this.saveMap = this.saveMap.bind(this);
   }
 
   updatePanel(newValue: number) {
@@ -31,6 +33,16 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
     }))
 
     this.setState({ draft: { ...draft, characters: updatedCharacters }})
+  }
+
+  saveMap(map: VenMap) {
+    const draft = this.state.draft;
+    const updatedMaps = draft.maps.set(map.name, map)
+
+    console.log("what we're saving")
+    console.log(draft.maps)
+
+    this.setState({ draft: { ...draft, maps: updatedMaps }})
   }
 
   render() {
@@ -52,7 +64,7 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
           Items content here
         </TabPanel>
         <TabPanel value={this.state.section} index={3}>
-          <MapEditor maps={this.state.draft.maps} />
+          <MapEditor maps={this.state.draft.maps} saveMap={this.saveMap}/>
         </TabPanel>
       </Box>
     </Stack> 

@@ -1,5 +1,6 @@
-import { Square } from '@mui/icons-material';
+import { Co2Sharp, Square } from '@mui/icons-material';
 import { Grid, List, ListItemButton, ListItemIcon, ListItemText, Stack, TextField, Tooltip, Typography } from '@mui/material';
+import { VenMap } from 'model/Campaign';
 import React from 'react';
 import { ReactNode } from 'react';
 
@@ -20,7 +21,12 @@ type Selection = {
   endColumn: number,
 }
 
-export class TileMap extends React.Component<{ tileMapping: Tile[][], tilePalette: Tile[], editTile: (tile: Tile) => void }, {
+export class TileMap extends React.Component<{
+  tileMapping: Tile[][],
+  tilePalette: Tile[],
+  editTile: (tile: Tile) => void,
+  saveTileMapping: (tileMap: Tile[][]) => void
+}, {
   mapSections: MapSectionData[][],
   selection: Selection | null,
   code: string,
@@ -58,6 +64,7 @@ export class TileMap extends React.Component<{ tileMapping: Tile[][], tilePalett
           onMouseUp={this.clearSelection}
           onMouseDown={this.startSelection}
           onMouseMove={this.select}
+          key={`${rowIndex} ${columnIndex}`}
         />
       })
     });
@@ -202,18 +209,20 @@ export class TileMap extends React.Component<{ tileMapping: Tile[][], tilePalett
 
   fill() {
     const selectedTile: Tile | null = this.state.filteredTilePalette.length >= 1 ? this.state.filteredTilePalette[0] : null
-
-    this.setState((state) => {
+    const newMap = this.mapRegion(this.state.mapSections, 0, 0, MAX_WIDTH, MAX_HEIGHT, (mapSection) => {
       return {
-        mapSections: this.mapRegion(state.mapSections, 0, 0, MAX_WIDTH, MAX_HEIGHT, (mapSection) => {
-          return {
-            tile: mapSection.selected && selectedTile ? selectedTile : mapSection.tile,
-            selected: false
-          }
-        }),
-        selection: null
+        tile: mapSection.selected && selectedTile ? selectedTile : mapSection.tile,
+        selected: false
       }
-    });
+    })
+
+    this.props.saveTileMapping(newMap.map((row) => {
+      return row.map((cell) => {
+        return cell.tile 
+      })
+    }));
+
+    this.setState({mapSections: newMap, selection: null})
   }
 
   mapRegion(
