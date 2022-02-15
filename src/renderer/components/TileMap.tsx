@@ -1,6 +1,7 @@
+import { ClassNames } from '@emotion/react';
 import { Co2Sharp, Square } from '@mui/icons-material';
 import { Grid, List, ListItemButton, ListItemIcon, ListItemText, Stack, TextField, Tooltip, Typography } from '@mui/material';
-import { VenMap } from 'model/Campaign';
+import { VenMap, VOID_TILE } from 'model/Campaign';
 import React from 'react';
 import { ReactNode } from 'react';
 
@@ -41,7 +42,7 @@ export class TileMap extends React.Component<{
     })),
     selection: null,
     code: "",
-    filteredTilePalette: this.props.tilePalette
+    filteredTilePalette: this.pristinePalette()
   }
 
   constructor(props: any) {
@@ -100,6 +101,10 @@ export class TileMap extends React.Component<{
         {mapSections}
       </div>
     </Stack>
+  }
+
+  pristinePalette(): Tile[] {
+    return [VOID_TILE].concat(this.props.tilePalette)
   }
 
   clearSelection() {
@@ -171,7 +176,7 @@ export class TileMap extends React.Component<{
   resetCode() {
     this.setState({
       code: "",
-      filteredTilePalette: this.props.tilePalette
+      filteredTilePalette: this.pristinePalette()
     });
   }
 
@@ -181,7 +186,7 @@ export class TileMap extends React.Component<{
 
       this.setState({
         code: newCode,
-        filteredTilePalette: this.props.tilePalette.filter((tile) => {
+        filteredTilePalette: this.pristinePalette().filter((tile) => {
           return this.tileMatchesCode(tile, newCode); 
         })
       });

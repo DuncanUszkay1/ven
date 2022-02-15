@@ -51,6 +51,6 @@ export const VOID_TILE: Tile = {
   color: "#000000",
   notes: "This tile won't be included in the final map.",
   description: "This tile won't be included in the final map.",
-  id: -1
+  id: 0
 } 
 export const NEW_MAP_TILES: Tile[][] = Array(MAP_HEIGHT).fill(Array(MAP_WIDTH).fill(VOID_TILE))
