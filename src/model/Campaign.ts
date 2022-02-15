@@ -54,3 +54,9 @@ export const VOID_TILE: Tile = {
   id: 0
 } 
 export const NEW_MAP_TILES: Tile[][] = Array(MAP_HEIGHT).fill(Array(MAP_WIDTH).fill(VOID_TILE))
+export const NEW_MAP: VenMap = {
+  name: "Untitled",
+  backgrounds: [],
+  tiles: NEW_MAP_TILES,
+  tilePalette: []
+}

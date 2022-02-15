@@ -7,11 +7,11 @@ import { Divider, Stack, Tab, Tabs } from '@mui/material';
 import { TabPanel } from './TabPanel';
 import { BackgroundEditor } from './BackgroundEditor';
 import { SelectedList } from './SelectableList';
-import { VenMap } from 'model/Campaign';
+import { NEW_MAP, VenMap } from 'model/Campaign';
 
 
 export class MapEditor extends React.Component<
-  { maps: Map<string, VenMap>, saveMap: (map: VenMap) => void },
+  { maps: Map<string, VenMap>, saveMap: (map: VenMap) => void, newMap: (map: VenMap) => void },
   { selectedTile: Tile | null, tabValue: number, selectedMap: string }
 > {
   state = { selectedTile: null, tabValue: 0, selectedMap: this.props.maps.keys().next().value }
@@ -25,6 +25,7 @@ export class MapEditor extends React.Component<
     this.handleTabEvent = this.handleTabEvent.bind(this);
     this.selectMap = this.selectMap.bind(this);
     this.updateTileMap = this.updateTileMap.bind(this);
+    this.newMap = this.newMap.bind(this);
   }
 
   editTile(tile: Tile) {
@@ -53,10 +54,15 @@ export class MapEditor extends React.Component<
   }
 
   updateTileMap(tileMap: Tile[][]) {
-    console.log("updating tile map in map editor...")
     const newMap: VenMap = {...this.selectedMap(), tiles: tileMap}
 
     this.props.saveMap(newMap)
+  }
+
+  newMap(name: string) {
+    const map: VenMap = {...NEW_MAP, name}
+
+    this.props.saveMap(map);
   }
 
   innerContent() {
@@ -92,7 +98,8 @@ export class MapEditor extends React.Component<
         items={Array.from(this.props.maps.keys())}
         selected={this.state.selectedMap}
         select={this.selectMap}
-        new={() => {}}
+        itemName="Map"
+        new={this.newMap}
       />  
       <Divider orientation="vertical" flexItem />
       {this.innerContent()} 
