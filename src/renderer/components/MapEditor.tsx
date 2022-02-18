@@ -11,7 +11,12 @@ import { NEW_MAP, VenMap } from 'model/Campaign';
 
 
 export class MapEditor extends React.Component<
-  { maps: Map<string, VenMap>, saveMap: (map: VenMap) => void },
+  {
+    maps: Map<string, VenMap>,
+    saveMap: (map: VenMap) => void,
+    createBackground: (background: Background, mapName: string) => void
+    deleteBackground: (background: Background, mapName: string) => void
+  },
   { selectedTile: Tile | null, tabValue: number, selectedMap: string }
 > {
   state = { selectedTile: null, tabValue: 0, selectedMap: this.props.maps.keys().next().value }
@@ -26,6 +31,8 @@ export class MapEditor extends React.Component<
     this.selectMap = this.selectMap.bind(this);
     this.updateTileMap = this.updateTileMap.bind(this);
     this.newMap = this.newMap.bind(this);
+    this.createBackground = this.createBackground.bind(this);
+    this.deleteBackground = this.deleteBackground.bind(this);
   }
 
   editTile(tile: Tile) {
@@ -65,6 +72,15 @@ export class MapEditor extends React.Component<
     this.props.saveMap(map);
   }
 
+  createBackground(background: Background) {
+    console.log(this.state)
+    this.props.createBackground(background, this.state.selectedMap)
+  }
+
+  deleteBackground(background: Background) {
+    this.props.deleteBackground(background, this.state.selectedMap)
+  }
+
   innerContent() {
     return <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -74,7 +90,11 @@ export class MapEditor extends React.Component<
         </Tabs>
       </Box>
       <TabPanel value={this.state.tabValue} index={0}>
-        <BackgroundEditor backgrounds={this.selectedMap().backgrounds} deleteBackground={(background) => { console.log(background)}}/>
+        <BackgroundEditor 
+          backgrounds={this.selectedMap().backgrounds}
+          deleteBackground={this.deleteBackground}
+          createBackground={this.createBackground}
+        />
       </TabPanel>
       <TabPanel value={this.state.tabValue} index={1}>
         {

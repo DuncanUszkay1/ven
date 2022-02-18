@@ -21,6 +21,8 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
     this.createCharacter = this.createCharacter.bind(this);
     this.saveMap = this.saveMap.bind(this);
     this.newFolder = this.newFolder.bind(this);
+    this.createBackground = this.createBackground.bind(this);
+    this.deleteBackground = this.deleteBackground.bind(this);
   }
 
   updatePanel(newValue: number) {
@@ -61,6 +63,24 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
     this.setState({ draft: { ...draft, characters: updatedCharacters }})
   }
 
+  createBackground(background: Background, mapName: string) {
+    const draft = this.state.draft;
+    const draftMap = draft.maps.get(mapName)!;
+    const updatedMaps = draft.maps.set(mapName, {...draftMap, backgrounds: draftMap.backgrounds.concat([background])});
+
+    this.setState({ draft: { ...draft, maps: updatedMaps }})
+  }
+
+  deleteBackground(background: Background, mapName: string) {
+    const draft = this.state.draft;
+    const draftMap = draft.maps.get(mapName)!;
+    const updatedMaps = draft.maps.set(mapName, {...draftMap, backgrounds: draftMap.backgrounds.filter((bg) => {
+      return bg !== background
+    })});
+
+    this.setState({ draft: { ...draft, maps: updatedMaps }})
+  }
+
   render() {
     return <Stack sx={{ height: "100%" }}>
       <Box sx={{ width: "100%", borderBottom: "1px solid grey", padding: "10px" }}>
@@ -80,7 +100,7 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
           Items content here
         </TabPanel>
         <TabPanel value={this.state.section} index={3}>
-          <MapEditor maps={this.state.draft.maps} saveMap={this.saveMap}/>
+          <MapEditor maps={this.state.draft.maps} saveMap={this.saveMap} createBackground={this.createBackground} deleteBackground={this.deleteBackground}/>
         </TabPanel>
       </Box>
     </Stack> 
