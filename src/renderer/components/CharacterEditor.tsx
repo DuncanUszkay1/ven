@@ -11,6 +11,7 @@ export class CharacterEditor extends React.Component<
   {
     characters: Map<string, Character[]>,
     saveCharacter: (character: Character, characterFolder: string) => void,
+    newFolder: (name: string) => void
   },
   { selectedCharacter?: Character, folder: string }
 > {
@@ -22,6 +23,7 @@ export class CharacterEditor extends React.Component<
     this.editCharacter = this.editCharacter.bind(this);
     this.saveCharacter = this.saveCharacter.bind(this);
     this.setFolder = this.setFolder.bind(this);
+    this.newFolder = this.newFolder.bind(this);
   }
 
   editCharacter(character: Character) {
@@ -51,6 +53,10 @@ export class CharacterEditor extends React.Component<
     this.setState({ folder: folder })
   }
 
+  newFolder(name: string) {
+    this.props.newFolder(name);
+  }
+
   render() {
     return <Stack direction="row" sx={{width: "100%"}}>
       <SelectedList
@@ -59,7 +65,7 @@ export class CharacterEditor extends React.Component<
         select={this.setFolder}
         key={this.state.folder}
         itemName="Character"
-        new={(name) => {console.log(name)}}/>  
+        new={this.newFolder}/>  
       <Divider orientation="vertical" flexItem />
       {this.innerContent()} 
     </Stack> 

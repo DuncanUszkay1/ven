@@ -11,7 +11,7 @@ import { NEW_MAP, VenMap } from 'model/Campaign';
 
 
 export class MapEditor extends React.Component<
-  { maps: Map<string, VenMap>, saveMap: (map: VenMap) => void, newMap: (map: VenMap) => void },
+  { maps: Map<string, VenMap>, saveMap: (map: VenMap) => void },
   { selectedTile: Tile | null, tabValue: number, selectedMap: string }
 > {
   state = { selectedTile: null, tabValue: 0, selectedMap: this.props.maps.keys().next().value }

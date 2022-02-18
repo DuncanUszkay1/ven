@@ -19,6 +19,7 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
     this.updatePanel = this.updatePanel.bind(this);
     this.saveCharacter = this.saveCharacter.bind(this);
     this.saveMap = this.saveMap.bind(this);
+    this.newFolder = this.newFolder.bind(this);
   }
 
   updatePanel(newValue: number) {
@@ -39,10 +40,14 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
     const draft = this.state.draft;
     const updatedMaps = draft.maps.set(map.name, map)
 
-    console.log("what we're saving")
-    console.log(draft.maps)
-
     this.setState({ draft: { ...draft, maps: updatedMaps }})
+  }
+
+  newFolder(name: string) {
+    const draft = this.state.draft;
+    const updatedCharacters = draft.characters.set(name, [])
+
+    this.setState({ draft: { ...draft, characters: updatedCharacters }})
   }
 
   render() {
@@ -58,7 +63,7 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
           Overview content here
         </TabPanel>
         <TabPanel value={this.state.section} index={1}>
-          <CharacterEditor characters={this.state.draft.characters} saveCharacter={this.saveCharacter} /> 
+          <CharacterEditor characters={this.state.draft.characters} saveCharacter={this.saveCharacter} newFolder={this.newFolder} /> 
         </TabPanel>
         <TabPanel value={this.state.section} index={2}>
           Items content here
