@@ -8,7 +8,7 @@ import { TabPanel } from './TabPanel';
 import { CharacterEditor } from './CharacterEditor';
 import { MapEditor } from './MapEditor';
 import { Character } from '../App';
-import { VenMap } from 'model/Campaign';
+import { generateCharacter, VenMap } from 'model/Campaign';
 
 export class Editor extends React.Component<{ campaign: Campaign }, { section: number, draft: Campaign }> {
   state = { section: 0, draft: this.props.campaign } 
@@ -18,6 +18,7 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
 
     this.updatePanel = this.updatePanel.bind(this);
     this.saveCharacter = this.saveCharacter.bind(this);
+    this.createCharacter = this.createCharacter.bind(this);
     this.saveMap = this.saveMap.bind(this);
     this.newFolder = this.newFolder.bind(this);
   }
@@ -32,6 +33,16 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
     const updatedCharacters = draft.characters.set(folder, draftCharacters.map((draft_character) => {
       return draft_character.uuid == character.uuid ? character : draft_character
     }))
+
+    this.setState({ draft: { ...draft, characters: updatedCharacters }})
+  }
+
+  createCharacter(folder: string) {
+    const draft = this.state.draft;
+    const draftCharacters: Character[] = draft.characters.get(folder)!;
+    const updatedCharacters = draft.characters.set(folder, draftCharacters.concat([
+      generateCharacter()
+    ]))
 
     this.setState({ draft: { ...draft, characters: updatedCharacters }})
   }
@@ -63,7 +74,7 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
           Overview content here
         </TabPanel>
         <TabPanel value={this.state.section} index={1}>
-          <CharacterEditor characters={this.state.draft.characters} saveCharacter={this.saveCharacter} newFolder={this.newFolder} /> 
+          <CharacterEditor characters={this.state.draft.characters} saveCharacter={this.saveCharacter} createCharacter={this.createCharacter} newFolder={this.newFolder} /> 
         </TabPanel>
         <TabPanel value={this.state.section} index={2}>
           Items content here

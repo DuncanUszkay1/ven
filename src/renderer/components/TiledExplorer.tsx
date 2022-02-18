@@ -1,5 +1,6 @@
 import * as React from 'react';
 import ImageList from '@mui/material/ImageList';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import EditIcon from '@mui/icons-material/Edit';
@@ -8,6 +9,7 @@ import { Character } from 'model/Campaign';
 
 export default function TiledExplorer(props: {
   editCharacter: (campaign: Character) => void,
+  createCharacter: () => void,
   characters: Character[]
 }) {
   const subtitle = (item: Character) => {
@@ -42,6 +44,28 @@ export default function TiledExplorer(props: {
           />
         </ImageListItem>
       ))}
+      <ImageListItem key={'new'} sx={{border: "1px solid grey"}}>
+        <img
+          src={`https://cdn.pixabay.com/photo/2012/04/18/00/07/silhouette-of-a-man-36181_1280.png`}
+          srcSet={`https://cdn.pixabay.com/photo/2012/04/18/00/07/silhouette-of-a-man-36181_1280.png`}
+          alt="New Character"
+          loading="lazy"
+        />
+        <ImageListItemBar
+          title="New Character"
+          subtitle="Default Template"
+          sx={{paddingLeft:"5px"}}
+          actionIcon={
+            <IconButton
+              aria-label={`Add a new character`}
+              onClick={props.createCharacter}
+            >
+              <AddCircleIcon />
+            </IconButton>
+          }
+          position="below"
+        />
+      </ImageListItem>
     </ImageList>
   );
 }

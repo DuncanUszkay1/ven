@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export type Campaign = {
   name: string;
   maps: Map<string, VenMap>;
@@ -11,6 +13,59 @@ export type Character = {
   img: string;
   uuid: string;
 }
+
+export function generateCharacter() {
+  return {
+    name: CHARACTER_NAMES[Math.floor(Math.random() * CHARACTER_NAMES.length)],
+    description: "",
+    dmNotes: "",
+    img: "https://64.media.tumblr.com/b40450545493e54d3470d9b6a301f02e/tumblr_n7xa3avoBi1s0b8kvo1_1280.gifv",
+    uuid: uuidv4()
+  } 
+}
+
+const CHARACTER_NAMES = [
+  "Akibrus",
+  "Angun",
+  "Balrus",
+  "Bulruk",
+  "Caldor",
+  "Dagen",
+  "Darvyn",
+  "Delvin",
+  "Dracyian",
+  "Dray",
+  "Eldar",
+  "Engar",
+  "Fabien",
+  "Farkas",
+  "Galdor",
+  "Igor",
+  "Jai-Blynn",
+  "Klayden",
+  "Laimus",
+  "Malfas",
+  "Norok",
+  "Orion",
+  "Pindious",
+  "Quintus",
+  "Rammir",
+  "Remus",
+  "Rorik",
+  "Sabir ",
+  "Séverin",
+  "Sirius",
+  "Soril",
+  "Sulfu",
+  "Syfas",
+  "Viktas",
+  "Vyn",
+  "Wilkass",
+  "Yagul",
+  "Zakkas",
+  "Zarek",
+  "Zorion"
+]
 
 export type ItemFolder = {
   name: string;

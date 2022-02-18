@@ -11,6 +11,7 @@ export class CharacterEditor extends React.Component<
   {
     characters: Map<string, Character[]>,
     saveCharacter: (character: Character, characterFolder: string) => void,
+    createCharacter: (folder: string) => void,
     newFolder: (name: string) => void
   },
   { selectedCharacter?: Character, folder: string }
@@ -22,12 +23,17 @@ export class CharacterEditor extends React.Component<
 
     this.editCharacter = this.editCharacter.bind(this);
     this.saveCharacter = this.saveCharacter.bind(this);
+    this.createCharacter = this.createCharacter.bind(this);
     this.setFolder = this.setFolder.bind(this);
     this.newFolder = this.newFolder.bind(this);
   }
 
   editCharacter(character: Character) {
     this.setState({selectedCharacter: character});
+  }
+
+  createCharacter() {
+    this.props.createCharacter(this.state.folder)
   }
 
   saveCharacter(character: Character) {
@@ -45,6 +51,7 @@ export class CharacterEditor extends React.Component<
       return <TiledExplorer 
         editCharacter={this.editCharacter}
         characters={this.props.characters.get(this.state.folder) || []}
+        createCharacter={this.createCharacter}
       />
     }
   }
