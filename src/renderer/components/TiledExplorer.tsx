@@ -21,7 +21,7 @@ export default function TiledExplorer(props: {
   return (
     <ImageList sx={{ width: "100%", gridTemplateColumns: "repeat(auto-fill, 200px) !important", paddingLeft: "24px" }}>
       {props.characters.map((item) => (
-        <ImageListItem key={item.img} sx={{border: "1px solid grey"}}>
+        <ImageListItem key={item.uuid} sx={{border: "1px solid grey"}}>
           <img
             src={`${item.img}?w=248&h=372&fit=crop&auto=format`}
             srcSet={`${item.img}?w=248&&h=372&fit=crop&auto=format&dpr=2 2x`}

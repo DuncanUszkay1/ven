@@ -51,6 +51,7 @@ export class SelectedList extends React.Component<{
   render() {
     const listItems = this.props.items.map((item) => {
       return <ListItemButton
+        key={item}
         selected={this.props.selected === item}
         onClick={() => { this.props.select(item) }}
       >

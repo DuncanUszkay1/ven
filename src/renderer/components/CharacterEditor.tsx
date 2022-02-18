@@ -160,7 +160,7 @@ class EditCharacterForm extends React.Component<{
           multiline
           id="outlined-required"
           label="DM Notes"
-          defaultValue={this.state.character.description}
+          defaultValue={this.state.character.dmNotes}
           onChange={this.editDMNotes}
         />
       </Stack>
