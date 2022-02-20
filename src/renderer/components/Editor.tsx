@@ -19,6 +19,7 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
     this.updatePanel = this.updatePanel.bind(this);
     this.saveCharacter = this.saveCharacter.bind(this);
     this.createCharacter = this.createCharacter.bind(this);
+    this.deleteCharacter = this.deleteCharacter.bind(this);
     this.saveMap = this.saveMap.bind(this);
     this.newFolder = this.newFolder.bind(this);
     this.createBackground = this.createBackground.bind(this);
@@ -34,6 +35,16 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
     const draftCharacters: Character[] = draft.characters.get(folder)!;
     const updatedCharacters = draft.characters.set(folder, draftCharacters.map((draft_character) => {
       return draft_character.uuid == character.uuid ? character : draft_character
+    }))
+
+    this.setState({ draft: { ...draft, characters: updatedCharacters }})
+  }
+
+  deleteCharacter(uuid: string, folder: string) {
+    const draft = this.state.draft;
+    const draftCharacters: Character[] = draft.characters.get(folder)!;
+    const updatedCharacters = draft.characters.set(folder, draftCharacters.filter((draft_character) => {
+      return draft_character.uuid != uuid
     }))
 
     this.setState({ draft: { ...draft, characters: updatedCharacters }})
@@ -94,7 +105,13 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
           Overview content here
         </TabPanel>
         <TabPanel value={this.state.section} index={1}>
-          <CharacterEditor characters={this.state.draft.characters} saveCharacter={this.saveCharacter} createCharacter={this.createCharacter} newFolder={this.newFolder} /> 
+          <CharacterEditor
+            characters={this.state.draft.characters}
+            saveCharacter={this.saveCharacter}
+            createCharacter={this.createCharacter}
+            newFolder={this.newFolder}
+            deleteCharacter={this.deleteCharacter}
+          /> 
         </TabPanel>
         <TabPanel value={this.state.section} index={2}>
           Items content here

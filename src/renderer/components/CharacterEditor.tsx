@@ -11,8 +11,9 @@ export class CharacterEditor extends React.Component<
   {
     characters: Map<string, Character[]>,
     saveCharacter: (character: Character, characterFolder: string) => void,
+    deleteCharacter: (uuid: string, folder: string) => void,
     createCharacter: (folder: string) => void,
-    newFolder: (name: string) => void
+    newFolder: (name: string) => void,
   },
   { selectedCharacter?: Character, folder: string }
 > {
@@ -24,6 +25,7 @@ export class CharacterEditor extends React.Component<
     this.editCharacter = this.editCharacter.bind(this);
     this.saveCharacter = this.saveCharacter.bind(this);
     this.createCharacter = this.createCharacter.bind(this);
+    this.deleteCharacter = this.deleteCharacter.bind(this);
     this.setFolder = this.setFolder.bind(this);
     this.newFolder = this.newFolder.bind(this);
   }
@@ -40,12 +42,17 @@ export class CharacterEditor extends React.Component<
     this.props.saveCharacter(character, this.state.folder)
   }
 
+  deleteCharacter(uuid: string) {
+    this.props.deleteCharacter(uuid, this.state.folder)
+  }
+
   innerContent() {
     if(this.state.selectedCharacter) {
       return <EditCharacterForm
         character={this.state.selectedCharacter}
         save={(character: Character) => { this.saveCharacter(character) }}
         quit={() => { this.setState({selectedCharacter: undefined}) }}
+        delete={(uuid) => { this.deleteCharacter(uuid) }}
       />
     } else {
       return <TiledExplorer 
@@ -83,6 +90,7 @@ class EditCharacterForm extends React.Component<{
   character: Character, 
   save: (character: Character) => void,
   quit: () => void 
+  delete: (uuid: string) => void
 }, {character: Character}> {
   state = { character: this.props.character }
 
@@ -163,6 +171,10 @@ class EditCharacterForm extends React.Component<{
           defaultValue={this.state.character.dmNotes}
           onChange={this.editDMNotes}
         />
+        <Button variant="text" onClick={() => {
+          this.props.delete(this.props.character.uuid)
+          this.props.quit();
+        }}>Delete</Button> 
       </Stack>
     </Box>
   }
