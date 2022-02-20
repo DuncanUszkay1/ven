@@ -11,11 +11,16 @@ import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { listen } from '../application/eventEmitter';
 import { resolveHtmlPath } from './util';
+import { TabletopImporter } from '../tabletop_simulator/import';
+import { DUMMY_CAMPAIGN } from '../model/Campaign';
 
 let mainWindow: BrowserWindow | null = null;
 
-
 listen(ipcMain);
+
+const TMP_HARDCODED_TABLETOP_DIR = "/Users/notmyproblem/Library/Tabletop Simulator/Saves/Saved Objects"
+const importer = new TabletopImporter(TMP_HARDCODED_TABLETOP_DIR);
+importer.importCampaign(DUMMY_CAMPAIGN)
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');

@@ -10,6 +10,7 @@ import { MapEditor } from './MapEditor';
 import { Character } from '../App';
 import { generateCharacter, generateItem, VenMap } from 'model/Campaign';
 import { ItemEditor } from './ItemEditor';
+import { Overview } from './Overview';
 
 export class Editor extends React.Component<{ campaign: Campaign }, { section: number, draft: Campaign }> {
   state = { section: 0, draft: this.props.campaign } 
@@ -144,7 +145,7 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
       >
         <Sidebar updatePanel={this.updatePanel}/>
         <TabPanel value={this.state.section} index={0}>
-          Overview content here
+          <Overview />
         </TabPanel>
         <TabPanel value={this.state.section} index={1}>
           <CharacterEditor
