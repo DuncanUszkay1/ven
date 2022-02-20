@@ -8,7 +8,8 @@ import { TabPanel } from './TabPanel';
 import { CharacterEditor } from './CharacterEditor';
 import { MapEditor } from './MapEditor';
 import { Character } from '../App';
-import { generateCharacter, VenMap } from 'model/Campaign';
+import { generateCharacter, generateItem, VenMap } from 'model/Campaign';
+import { ItemEditor } from './ItemEditor';
 
 export class Editor extends React.Component<{ campaign: Campaign }, { section: number, draft: Campaign }> {
   state = { section: 0, draft: this.props.campaign } 
@@ -20,6 +21,9 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
     this.saveCharacter = this.saveCharacter.bind(this);
     this.createCharacter = this.createCharacter.bind(this);
     this.deleteCharacter = this.deleteCharacter.bind(this);
+    this.saveItem = this.saveItem.bind(this);
+    this.createItem = this.createItem.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
     this.saveMap = this.saveMap.bind(this);
     this.newFolder = this.newFolder.bind(this);
     this.createBackground = this.createBackground.bind(this);
@@ -28,6 +32,36 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
 
   updatePanel(newValue: number) {
     this.setState({ section: newValue })
+  }
+
+  saveItem(item: Item, folder: string) {
+    const draft = this.state.draft;
+    const draftItems: Item[] = draft.items.get(folder)!;
+    const updatedItems = draft.items.set(folder, draftItems.map((draft_item) => {
+      return draft_item.uuid == item.uuid ? item : draft_item
+    }))
+
+    this.setState({ draft: { ...draft, items: updatedItems }})
+  }
+
+  deleteItem(uuid: string, folder: string) {
+    const draft = this.state.draft;
+    const draftItems: Item[] = draft.items.get(folder)!;
+    const updatedItems = draft.items.set(folder, draftItems.filter((draft_item) => {
+      return draft_item.uuid != uuid
+    }))
+
+    this.setState({ draft: { ...draft, items: updatedItems }})
+  }
+
+  createItem(folder: string) {
+    const draft = this.state.draft;
+    const draftItems: Item[] = draft.items.get(folder)!;
+    const updatedItems = draft.items.set(folder, draftItems.concat([
+      generateItem()
+    ]))
+
+    this.setState({ draft: { ...draft, items: updatedItems }})
   }
 
   saveCharacter(character: Character, folder: string) {
@@ -114,7 +148,13 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
           /> 
         </TabPanel>
         <TabPanel value={this.state.section} index={2}>
-          Items content here
+          <ItemEditor
+            items={this.state.draft.items}
+            saveItem={this.saveItem}
+            createItem={this.createItem}
+            newFolder={this.newFolder}
+            deleteItem={this.deleteItem}
+          /> 
         </TabPanel>
         <TabPanel value={this.state.section} index={3}>
           <MapEditor maps={this.state.draft.maps} saveMap={this.saveMap} createBackground={this.createBackground} deleteBackground={this.deleteBackground}/>

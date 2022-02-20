@@ -1,18 +1,17 @@
-import * as React from 'react';
 import ImageList from '@mui/material/ImageList';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import EditIcon from '@mui/icons-material/Edit';
 import { IconButton } from '@mui/material';
-import { Character } from 'model/Campaign';
+import { Item } from 'model/Campaign';
 
-export default function TiledExplorer(props: {
-  editCharacter: (campaign: Character) => void,
-  createCharacter: () => void,
-  characters: Character[]
+export default function ItemExplorer(props: {
+  editItem: (campaign: Item) => void,
+  createItem: () => void,
+  items: Item[]
 }) {
-  const subtitle = (item: Character) => {
+  const subtitle = (item: Item) => {
     if(item.dmNotes.length > 0) {
       return item.dmNotes  
     }
@@ -20,7 +19,7 @@ export default function TiledExplorer(props: {
   }
   return (
     <ImageList sx={{ width: "100%", gridTemplateColumns: "repeat(auto-fill, 200px) !important", paddingLeft: "24px" }}>
-      {props.characters.map((item) => (
+      {props.items.map((item) => (
         <ImageListItem key={item.uuid} sx={{border: "1px solid grey"}}>
           <img
             src={`${item.img}?w=248&h=372&fit=crop&auto=format`}
@@ -35,7 +34,7 @@ export default function TiledExplorer(props: {
             actionIcon={
               <IconButton
                 aria-label={`info about ${item.name}`}
-                onClick={() => { props.editCharacter(item)}}
+                onClick={() => { props.editItem(item)}}
               >
                 <EditIcon />
               </IconButton>
@@ -46,19 +45,19 @@ export default function TiledExplorer(props: {
       ))}
       <ImageListItem key={'new'} sx={{border: "1px solid grey"}}>
         <img
-          src={`https://cdn.pixabay.com/photo/2012/04/18/00/07/silhouette-of-a-man-36181_1280.png`}
-          srcSet={`https://cdn.pixabay.com/photo/2012/04/18/00/07/silhouette-of-a-man-36181_1280.png`}
-          alt="New Character"
+          src={`https://www.pngitem.com/pimgs/m/88-887112_wrench-png-templates-silhouettes-wrench-clip-art-free.png`}
+          srcSet={`https://www.pngitem.com/pimgs/m/88-887112_wrench-png-templates-silhouettes-wrench-clip-art-free.png`}
+          alt="New Item"
           loading="lazy"
         />
         <ImageListItemBar
-          title="New Character"
+          title="New Item"
           subtitle="Default Template"
           sx={{paddingLeft:"5px"}}
           actionIcon={
             <IconButton
-              aria-label={`Add a new character`}
-              onClick={props.createCharacter}
+              aria-label={`Add a new item`}
+              onClick={props.createItem}
             >
               <AddCircleIcon />
             </IconButton>

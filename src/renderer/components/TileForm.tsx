@@ -1,7 +1,5 @@
 import React from 'react';
 import Stack from '@mui/material/Stack';
-import SelectedList from './SelectableList';
-import TiledExplorer from './TiledExplorer';
 import { Button, Divider, IconButton, Input, TextField } from '@mui/material';
 import { Tile } from "../App";
 import { ArrowBack } from '@mui/icons-material';
@@ -45,7 +43,7 @@ export class TileForm extends React.Component<{
   }
 
   onDMNotesChange(event) {
-    this.setState({ notes: dmNotes })
+    this.setState({ notes: event.target.value })
   }
 
   save() {

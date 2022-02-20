@@ -4,6 +4,7 @@ export type Campaign = {
   name: string;
   maps: Map<string, VenMap>;
   characters: Map<string, Character[]>;
+  items: Map<string, Item[]>;
 }
 
 export type Character = {
@@ -77,7 +78,26 @@ export type Item = {
   description: string;
   img: string;
   uuid: string;
+  dmNotes: string;
 }
+
+export function generateItem() {
+  return {
+    name: ITEM_NAMES[Math.floor(Math.random() * ITEM_NAMES.length)],
+    description: "",
+    dmNotes: "",
+    img: "https://tipsmake.com/data/images/the-strange-object-is-from-ancient-roman-times-the-mystery-cannot-be-decoded-picture-1-M6q9J0V9I.jpg",
+    uuid: uuidv4()
+  } 
+}
+
+const ITEM_NAMES = [
+  "Gizmo",
+  "Widget",
+  "Doodad",
+  "ThingaMaJig",
+  "Bonkle"
+]
 
 export type VenMap = {
   name: string;

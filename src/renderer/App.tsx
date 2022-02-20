@@ -2,7 +2,7 @@ import { CampaignSelector } from './components/CampaignSelector';
 import React from 'react';
 import { Editor } from './components/Editor';
 import { Campaign } from '../model/Campaign';
-export { Campaign, Character, Tile, VOID_TILE, Background } from '../model/Campaign';
+export { Campaign, Character, Tile, Item, VOID_TILE, Background } from '../model/Campaign';
 
 export type AppState = {
   campaign?: Campaign

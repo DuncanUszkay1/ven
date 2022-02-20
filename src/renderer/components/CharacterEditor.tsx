@@ -1,7 +1,7 @@
 import React from 'react';
 import Stack from '@mui/material/Stack';
 import { SelectedList } from './SelectableList';
-import TiledExplorer from './TiledExplorer';
+import CharacterExplorer from './CharacterExplorer';
 import { Button, Divider, IconButton, Input, TextField } from '@mui/material';
 import { Character } from "../App";
 import { ArrowBack } from '@mui/icons-material';
@@ -55,7 +55,7 @@ export class CharacterEditor extends React.Component<
         delete={(uuid) => { this.deleteCharacter(uuid) }}
       />
     } else {
-      return <TiledExplorer 
+      return <CharacterExplorer 
         editCharacter={this.editCharacter}
         characters={this.props.characters.get(this.state.folder) || []}
         createCharacter={this.createCharacter}
