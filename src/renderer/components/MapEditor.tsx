@@ -7,7 +7,7 @@ import { Divider, Stack, Tab, Tabs } from '@mui/material';
 import { TabPanel } from './TabPanel';
 import { BackgroundEditor } from './BackgroundEditor';
 import { SelectedList } from './SelectableList';
-import { NEW_MAP, VenMap } from 'model/Campaign';
+import { NEW_MAP, VOID_TILE, VenMap } from 'model/Campaign';
 
 
 export class MapEditor extends React.Component<
@@ -36,12 +36,19 @@ export class MapEditor extends React.Component<
   }
 
   editTile(tile: Tile) {
-    this.setState({ selectedTile: tile })
+    if(tile.id != VOID_TILE.id) {
+      this.setState({ selectedTile: tile })
+    }
   }
 
   saveTile(tile: Tile) {
-    console.log("saving tile")
+    const oldMap = this.selectedMap();
     console.log(tile)
+    const newMap: VenMap = {...oldMap, tilePalette: oldMap.tilePalette.map((t) => {
+      return t.id === tile.id ? tile : t 
+    })}
+
+    this.props.saveMap(newMap)
   }
 
   closeTile() {
@@ -73,7 +80,6 @@ export class MapEditor extends React.Component<
   }
 
   createBackground(background: Background) {
-    console.log(this.state)
     this.props.createBackground(background, this.state.selectedMap)
   }
 
