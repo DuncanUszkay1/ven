@@ -1,4 +1,5 @@
 import { ClassNames } from '@emotion/react';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Co2Sharp, Square } from '@mui/icons-material';
 import { Grid, List, ListItemButton, ListItemIcon, ListItemText, Stack, TextField, Tooltip, Typography } from '@mui/material';
 import { VenMap, VOID_TILE } from 'model/Campaign';
@@ -26,12 +27,14 @@ export class TileMap extends React.Component<{
   tileMapping: Tile[][],
   tilePalette: Tile[],
   editTile: (tile: Tile) => void,
+  addTile: () => void,
   saveTileMapping: (tileMap: Tile[][]) => void
 }, {
   mapSections: MapSectionData[][],
   selection: Selection | null,
   code: string,
-  filteredTilePalette: Tile[]
+  filteredTilePalette: Tile[],
+  refreshPaletteOnRender: boolean
 }> {
   state = {
     mapSections: this.props.tileMapping.map((row) => row.map((tile) => {
@@ -42,7 +45,8 @@ export class TileMap extends React.Component<{
     })),
     selection: null,
     code: "",
-    filteredTilePalette: this.pristinePalette()
+    filteredTilePalette: this.pristinePalette(),
+    refreshPaletteOnRender: false
   }
 
   constructor(props: any) {
@@ -52,6 +56,16 @@ export class TileMap extends React.Component<{
     this.startSelection = this.startSelection.bind(this);
     this.select = this.select.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
+    this.addTile = this.addTile.bind(this);
+  }
+
+  componentDidUpdate() {
+    if(this.state.refreshPaletteOnRender == true) {
+      this.setState({
+        refreshPaletteOnRender: false,
+        filteredTilePalette: this.pristinePalette()
+      })
+    }
   }
 
   render() {
@@ -88,6 +102,12 @@ export class TileMap extends React.Component<{
         />
         <List component="nav" aria-label="main mailbox folders">
           {tiles}
+          <ListItemButton onClick={this.addTile}>
+            <ListItemIcon>
+              <AddCircleIcon />
+            </ListItemIcon>
+            <ListItemText primary={`New Tile`} />
+          </ListItemButton>
         </List>
       </Stack>
       <div style={{
@@ -103,7 +123,14 @@ export class TileMap extends React.Component<{
     </Stack>
   }
 
+  addTile() {
+    this.props.addTile();
+
+    this.setState({ refreshPaletteOnRender: true })
+  }
+
   pristinePalette(): Tile[] {
+    console.log(this.props.tilePalette)
     return [VOID_TILE].concat(this.props.tilePalette)
   }
 

@@ -7,7 +7,7 @@ import { Divider, Stack, Tab, Tabs } from '@mui/material';
 import { TabPanel } from './TabPanel';
 import { BackgroundEditor } from './BackgroundEditor';
 import { SelectedList } from './SelectableList';
-import { NEW_MAP, VOID_TILE, VenMap } from 'model/Campaign';
+import { NEW_MAP, VOID_TILE, NEW_TILE, VenMap } from 'model/Campaign';
 
 
 export class MapEditor extends React.Component<
@@ -31,8 +31,10 @@ export class MapEditor extends React.Component<
     this.selectMap = this.selectMap.bind(this);
     this.updateTileMap = this.updateTileMap.bind(this);
     this.newMap = this.newMap.bind(this);
+    this.newTile = this.newTile.bind(this);
     this.createBackground = this.createBackground.bind(this);
     this.deleteBackground = this.deleteBackground.bind(this);
+    this.findTilePaletteID = this.findTilePaletteID.bind(this);
   }
 
   editTile(tile: Tile) {
@@ -43,10 +45,34 @@ export class MapEditor extends React.Component<
 
   saveTile(tile: Tile) {
     const oldMap = this.selectedMap();
-    console.log(tile)
     const newMap: VenMap = {...oldMap, tilePalette: oldMap.tilePalette.map((t) => {
       return t.id === tile.id ? tile : t 
     })}
+
+    this.props.saveMap(newMap)
+  }
+
+  findTilePaletteID() {
+    const oldMap = this.selectedMap();
+    const currentIDs = oldMap.tilePalette.map((tile) => { return tile.id }).sort()
+
+    for(let i = 1; i < currentIDs.length; i++) {
+      const cursor = currentIDs[i];
+      const previous = currentIDs[i-1];
+
+      if(cursor - previous > 1) {
+        return previous + 1
+      }
+    }
+
+    const lastID = currentIDs.slice(-1).pop()!;
+    return lastID + 1; 
+  }
+
+  newTile() {
+    const oldMap = this.selectedMap();
+    const newTile = {...NEW_TILE, id: this.findTilePaletteID() }
+    const newMap: VenMap = {...oldMap, tilePalette: oldMap.tilePalette.concat([newTile])}
 
     this.props.saveMap(newMap)
   }
@@ -110,6 +136,7 @@ export class MapEditor extends React.Component<
               tileMapping={this.selectedMap().tiles}
               tilePalette={this.selectedMap().tilePalette}
               editTile={this.editTile}
+              addTile={this.newTile}
               key={this.selectedMap().name}
               saveTileMapping={this.updateTileMap}
             />
@@ -119,6 +146,7 @@ export class MapEditor extends React.Component<
   }
 
   render() {
+    console.log(this.selectedMap())
     return <Stack direction="row" sx={{width: "100%"}}>
       <SelectedList
         items={Array.from(this.props.maps.keys())}
