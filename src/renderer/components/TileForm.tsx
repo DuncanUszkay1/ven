@@ -11,7 +11,8 @@ import { ChromePicker } from 'react-color';
 export class TileForm extends React.Component<{
   tile: Tile, 
   save: (tile: Tile) => void,
-  quit: () => void 
+  quit: () => void,
+  delete: (id: number) => void 
 }, { color: string, name: string, description: string, dmNotes: string }> {
   state = {
     color: this.props.tile.color,
@@ -28,6 +29,7 @@ export class TileForm extends React.Component<{
     this.onDMNotesChange = this.onDMNotesChange.bind(this)
     this.onColorChange = this.onColorChange.bind(this)
     this.save = this.save.bind(this)
+    this.delete = this.delete.bind(this)
   }
 
   onColorChange(event) {
@@ -54,6 +56,12 @@ export class TileForm extends React.Component<{
       notes: this.state.dmNotes,
       id: this.props.tile.id
     });
+
+    this.props.quit();
+  }
+
+  delete() {
+    this.props.delete(this.props.tile.id);
 
     this.props.quit();
   }
@@ -89,6 +97,7 @@ export class TileForm extends React.Component<{
           onChange={this.onDMNotesChange}
           defaultValue={this.props.tile.notes}
         />
+        <Button variant="text" onClick={this.delete}>Delete</Button> 
       </Stack>
     </Box>
   }

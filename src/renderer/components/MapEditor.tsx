@@ -27,6 +27,7 @@ export class MapEditor extends React.Component<
     this.editTile = this.editTile.bind(this);
     this.saveTile = this.saveTile.bind(this);
     this.closeTile = this.closeTile.bind(this);
+    this.deleteTile = this.deleteTile.bind(this);
     this.handleTabEvent = this.handleTabEvent.bind(this);
     this.selectMap = this.selectMap.bind(this);
     this.updateTileMap = this.updateTileMap.bind(this);
@@ -81,6 +82,13 @@ export class MapEditor extends React.Component<
     this.setState({ selectedTile: null })
   }
 
+  deleteTile(tileID) {
+    const oldMap = this.selectedMap();
+    const newMap: VenMap = {...oldMap, tilePalette: oldMap.tilePalette.filter((t) => { return t.id != tileID })}
+
+    this.props.saveMap(newMap)
+  }
+
   handleTabEvent(_: any, newValue: number) {
     this.setState({ tabValue: newValue })
   }
@@ -131,7 +139,7 @@ export class MapEditor extends React.Component<
       <TabPanel value={this.state.tabValue} index={1}>
         {
           this.state.selectedTile ?
-            <TileForm tile={this.state.selectedTile} save={this.saveTile} quit={this.closeTile}/> :
+            <TileForm tile={this.state.selectedTile} save={this.saveTile} quit={this.closeTile} delete={this.deleteTile}/> :
             <TileMap
               tileMapping={this.selectedMap().tiles}
               tilePalette={this.selectedMap().tilePalette}
@@ -146,7 +154,6 @@ export class MapEditor extends React.Component<
   }
 
   render() {
-    console.log(this.selectedMap())
     return <Stack direction="row" sx={{width: "100%"}}>
       <SelectedList
         items={Array.from(this.props.maps.keys())}

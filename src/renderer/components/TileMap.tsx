@@ -130,8 +130,7 @@ export class TileMap extends React.Component<{
   }
 
   pristinePalette(): Tile[] {
-    console.log(this.props.tilePalette)
-    return [VOID_TILE].concat(this.props.tilePalette)
+    return [VOID_TILE].concat(this.props.tilePalette).sort((a, b) => { return a.id - b.id })
   }
 
   clearSelection() {
