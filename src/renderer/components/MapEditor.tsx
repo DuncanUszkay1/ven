@@ -57,6 +57,8 @@ export class MapEditor extends React.Component<
     const oldMap = this.selectedMap();
     const currentIDs = oldMap.tilePalette.map((tile) => { return tile.id }).sort()
 
+    if(currentIDs.length == 0 || currentIDs[0] > 1) { return 1; }
+
     for(let i = 1; i < currentIDs.length; i++) {
       const cursor = currentIDs[i];
       const previous = currentIDs[i-1];
