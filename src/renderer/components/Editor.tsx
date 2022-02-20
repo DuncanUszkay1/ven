@@ -25,7 +25,8 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
     this.createItem = this.createItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
     this.saveMap = this.saveMap.bind(this);
-    this.newFolder = this.newFolder.bind(this);
+    this.newCharacterFolder = this.newCharacterFolder.bind(this);
+    this.newItemFolder = this.newItemFolder.bind(this);
     this.createBackground = this.createBackground.bind(this);
     this.deleteBackground = this.deleteBackground.bind(this);
   }
@@ -101,11 +102,18 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
     this.setState({ draft: { ...draft, maps: updatedMaps }})
   }
 
-  newFolder(name: string) {
+  newCharacterFolder(name: string) {
     const draft = this.state.draft;
     const updatedCharacters = draft.characters.set(name, [])
 
     this.setState({ draft: { ...draft, characters: updatedCharacters }})
+  }
+
+  newItemFolder(name: string) {
+    const draft = this.state.draft;
+    const updatedItems = draft.items.set(name, [])
+
+    this.setState({ draft: { ...draft, items: updatedItems }})
   }
 
   createBackground(background: Background, mapName: string) {
@@ -143,7 +151,7 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
             characters={this.state.draft.characters}
             saveCharacter={this.saveCharacter}
             createCharacter={this.createCharacter}
-            newFolder={this.newFolder}
+            newFolder={this.newCharacterFolder}
             deleteCharacter={this.deleteCharacter}
           /> 
         </TabPanel>
@@ -152,7 +160,7 @@ export class Editor extends React.Component<{ campaign: Campaign }, { section: n
             items={this.state.draft.items}
             saveItem={this.saveItem}
             createItem={this.createItem}
-            newFolder={this.newFolder}
+            newFolder={this.newItemFolder}
             deleteItem={this.deleteItem}
           /> 
         </TabPanel>
