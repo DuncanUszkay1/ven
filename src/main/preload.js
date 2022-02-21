@@ -1,9 +1,12 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
+console.log("running preload...")
+
 contextBridge.exposeInMainWorld('electron', {
   ipcRenderer: {
-    myPing() {
-      ipcRenderer.send('ipc-example', 'ping');
+    importCampaign(campaign) {
+      console.log("Context bridge sending campaign")
+      ipcRenderer.send('import-campaign', campaign);
     },
     on(channel, func) {
       const validChannels = ['ipc-example'];
