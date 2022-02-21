@@ -12,7 +12,11 @@ import { generateCharacter, generateItem, VenMap } from 'model/Campaign';
 import { ItemEditor } from './ItemEditor';
 import { Overview } from './Overview';
 
-export class Editor extends React.Component<{ campaign: Campaign, tabletopImport: (campaign: Campaign) => void }, { section: number, draft: Campaign }> {
+export class Editor extends React.Component<{
+  campaign: Campaign,
+  tabletopImport: (campaign: Campaign) => void,
+  saveCampaign: (campaign: Campaign) => void,
+}, { section: number, draft: Campaign }> {
   state = { section: 0, draft: this.props.campaign } 
 
   constructor(props: any) {
@@ -31,6 +35,7 @@ export class Editor extends React.Component<{ campaign: Campaign, tabletopImport
     this.createBackground = this.createBackground.bind(this);
     this.deleteBackground = this.deleteBackground.bind(this);
     this.tabletopImport = this.tabletopImport.bind(this);
+    this.saveCampaign = this.saveCampaign.bind(this);
   }
 
   updatePanel(newValue: number) {
@@ -140,6 +145,10 @@ export class Editor extends React.Component<{ campaign: Campaign, tabletopImport
     this.props.tabletopImport(this.state.draft);
   }
 
+  saveCampaign() {
+    this.props.saveCampaign(this.state.draft);
+  }
+
   render() {
     return <Stack sx={{ height: "100%" }}>
       <Box sx={{ width: "100%", borderBottom: "1px solid grey", padding: "10px" }}>
@@ -150,7 +159,7 @@ export class Editor extends React.Component<{ campaign: Campaign, tabletopImport
       >
         <Sidebar updatePanel={this.updatePanel}/>
         <TabPanel value={this.state.section} index={0}>
-          <Overview tabletopImport={this.tabletopImport}/>
+          <Overview tabletopImport={this.tabletopImport} saveCampaign={this.saveCampaign}/>
         </TabPanel>
         <TabPanel value={this.state.section} index={1}>
           <CharacterEditor

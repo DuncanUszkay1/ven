@@ -1,4 +1,5 @@
 import { CampaignSelector } from './components/CampaignSelector';
+import { dialog } from 'electron';
 import React from 'react';
 import { Editor } from './components/Editor';
 import { Campaign } from '../model/Campaign';
@@ -11,6 +12,7 @@ declare global {
     electron: {
       ipcRenderer: {
         importCampaign: (campaign: Campaign) => void;
+        saveCampaign: (campaign: Campaign) => void;
         updateTabletopDir: (dir: string) => void;
       }
     }
@@ -34,6 +36,7 @@ export class App extends React.Component<{}, AppState> {
     this.setCampaign = this.setCampaign.bind(this)
     this.importCampaign = this.importCampaign.bind(this)
     this.updateTabletopDir = this.updateTabletopDir.bind(this)
+    this.saveCampaign = this.saveCampaign.bind(this)
   }
 
   importCampaign(campaign: Campaign) {
@@ -52,7 +55,7 @@ export class App extends React.Component<{}, AppState> {
   }
 
   saveCampaign(campaign: Campaign) {
-    console.log("saving campaign")
+    window.electron.ipcRenderer.saveCampaign(campaign);
   }
 
   render() {
@@ -60,7 +63,7 @@ export class App extends React.Component<{}, AppState> {
       if(this.state.campaign === undefined) {
         return <CampaignSelector setCampaign={this.setCampaign} />
       } else {
-        return <Editor campaign={this.state.campaign} tabletopImport={this.importCampaign}/> 
+        return <Editor campaign={this.state.campaign} tabletopImport={this.importCampaign} saveCampaign={this.saveCampaign}/> 
       }
     } else {
       return <Config updateTabletopDir={this.updateTabletopDir}/>

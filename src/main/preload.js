@@ -5,8 +5,10 @@ console.log("running preload...")
 contextBridge.exposeInMainWorld('electron', {
   ipcRenderer: {
     importCampaign(campaign) {
-      console.log("Context bridge sending campaign")
       ipcRenderer.send('import-campaign', campaign);
+    },
+    saveCampaign(campaign) {
+      ipcRenderer.send('save-campaign', campaign);
     },
     updateTabletopDir(dir) {
       console.log("updating tabletop dir")

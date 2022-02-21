@@ -8,11 +8,13 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
 import { resolveHtmlPath } from './util';
 import { TabletopImporter } from '../tabletop_simulator/import';
 import { DUMMY_CAMPAIGN } from '../model/Campaign';
 import Store from 'electron-store';
+import { fstat } from 'fs';
+import fs from 'fs';
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -30,6 +32,37 @@ ipcMain.on('import-campaign', async (event, arg) => {
   const importer = new TabletopImporter(config.get(TABLETOP_DIR_KEY) as string);
   importer.importCampaign(arg)
 });
+
+ipcMain.on('save-campaign', async (event, arg) => {
+  if(mainWindow !== null) {
+    const filename = dialog.showSaveDialogSync(mainWindow, { filters: [{name: "Ven Campaigns", extensions: [".json"]}]})
+    console.log(arg)
+    if(filename !== undefined) {
+      fs.writeFileSync(filename, JSON.stringify(arg, replacer, 2));
+    }
+  }
+});
+
+// https://stackoverflow.com/questions/29085197/how-do-you-json-stringify-an-es6-map
+function replacer(key: string, value: any) {
+  if(value instanceof Map) {
+    return {
+      dataType: 'Map',
+      value: Array.from(value.entries()), // or with spread: value: [...value]
+    };
+  } else {
+    return value;
+  }
+}
+
+function reviver(key: string, value: any) {
+  if(typeof value === 'object' && value !== null) {
+    if (value.dataType === 'Map') {
+      return new Map(value.value);
+    }
+  }
+  return value;
+}
 
 ipcMain.on('update-tabletop-dir', async (event, arg) => {
   config.set(TABLETOP_DIR_KEY, arg)
