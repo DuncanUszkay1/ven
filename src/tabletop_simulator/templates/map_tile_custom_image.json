@@ -1,0 +1,11 @@
+{
+  "ImageURL":"https://dummyimage.com/100x100/b5b5b5/&text=%99",
+  "ImageScalar": 1.0,
+  "WidthScale": 0.0,
+  "CustomTile": {
+    "Type": 0,
+    "Thickness": 0.1,
+    "Stackable": false,
+    "Stretch": false
+  }
+}

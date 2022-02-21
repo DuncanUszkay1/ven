@@ -1,0 +1,43 @@
+{
+  "Name": "Custom_Tile",
+  "Transform": {
+    "posX": 34,
+    "posY": 0,
+    "posZ": -22,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 0.99,
+    "scaleY": 1.0,
+    "scaleZ": 0.99
+  },
+  "Nickname": "The Pigeon Pit",
+  "Description": "",
+  "GMNotes": "",
+  "Tags": [
+    "map"
+  ],
+  "ImageSecondaryURL":"",
+  "CustomImage": {
+    "ImageURL":"https://dummyimage.com/100x100/b5b5b5/&text=%99",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+      "Type": 0,
+      "Thickness": 0.1,
+      "Stackable": false,
+      "Stretch": false
+    }
+  },
+    "ColorDiffuse": {
+      "r": 0.165505171,
+      "g": 0.165505171,
+      "b": 0.165505171
+    },
+  "GridProjection": true,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "XmlUI": "",
+  "States": {
+  }
+}

@@ -149,6 +149,16 @@ const CLOSET_TILE: Tile = { name: "Closet", color: "#4a3b0a", id: 3, description
 const WATER_TILE: Tile = { name: "Water", color: "#00ffee", id: 4, description: "Feels nice to touch!", notes: "Grass is slippery" }
 const TILE_PALETTE = [GRASS_TILE, INN_TILE, CLOSET_TILE, WATER_TILE]
 
+const CHECKERBOARD_TILES = NEW_MAP_TILES.map((row, rowIndex) => {
+  return row.map((tile, columnIndex) => {
+    if((columnIndex + rowIndex) % 2 == 0) {
+      return GRASS_TILE
+    } else {
+      return INN_TILE
+    }
+  })
+})
+
 export const EMPTY_CAMPAIGN: Campaign = {
   name: "The Path of Misery",
   maps: new Map<string, VenMap>([["Default", NEW_MAP]]),
@@ -166,7 +176,7 @@ export const DUMMY_CAMPAIGN: Campaign = {
         { name: "Inn 3", img: "https://cdnb.artstation.com/p/assets/images/images/023/527/051/large/mario-v-popup-11.jpg?1579513575" },
         { name: "Grass", img: "https://hgtvhome.sndimg.com/content/dam/images/hgtv/fullset/2012/8/10/0/HMYGD211_Galloway-backyard-3-AFTER-2517-ret_s4x3.jpg.rend.hgtvcom.966.725.suffix/1400977751663.jpeg" }
       ],
-      tiles: NEW_MAP_TILES,
+      tiles: CHECKERBOARD_TILES,
       tilePalette: TILE_PALETTE
     }],
     ["Hell", {
