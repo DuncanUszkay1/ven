@@ -12,11 +12,17 @@ import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { resolveHtmlPath } from './util';
 import { TabletopImporter } from '../tabletop_simulator/import';
 import { DUMMY_CAMPAIGN } from '../model/Campaign';
+import Store from 'electron-store';
 
 let mainWindow: BrowserWindow | null = null;
 
-const TMP_HARDCODED_TABLETOP_DIR = "/Users/notmyproblem/Library/Tabletop Simulator/Saves/Saved Objects"
-const importer = new TabletopImporter(TMP_HARDCODED_TABLETOP_DIR);
+const config = new Store();
+
+// const TMP_HARDCODED_TABLETOP_DIR = "/Users/notmyproblem/Library/Tabletop Simulator/Saves/Saved Objects"
+
+// config.set("tabletop_dir", TMP_HARDCODED_TABLETOP_DIR)
+
+const importer = new TabletopImporter(config.get("tabletop_dir") as string);
 
 ipcMain.on('import-campaign', async (event, arg) => {
   importer.importCampaign(arg)

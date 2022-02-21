@@ -22,7 +22,7 @@ export class Overview extends React.Component<
   }
 
   render() {
-    return <Stack>
+    return <Stack sx={{alignItems: "center", justifyContent: "center", width: "100%", maxWidth: "600px", marginLeft: "10px", marginRight: "10px", marginTop: "30px"}}>
       <Button variant="contained" onClick={this.props.tabletopImport}>Tabletop Simulator Import</Button> 
     </Stack>
   }
