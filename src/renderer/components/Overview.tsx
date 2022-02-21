@@ -23,7 +23,7 @@ export class Overview extends React.Component<
 
   render() {
     return <Stack>
-      <Button variant="text" onClick={this.props.tabletopImport}>Import</Button> 
+      <Button variant="contained" onClick={this.props.tabletopImport}>Tabletop Simulator Import</Button> 
     </Stack>
   }
 }

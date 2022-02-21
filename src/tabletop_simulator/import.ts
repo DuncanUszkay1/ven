@@ -15,11 +15,12 @@ export class TabletopImporter {
   }
 
   importCampaign(campaign: Campaign) {
-    this.ensureFolder(this.campaignPath(campaign.name));
+    this.ensureEmptyFolder(this.campaignPath(campaign.name));
 
     this.ensureFolder(this.characterBasePath(campaign.name));
     campaign.characters.forEach((characters, folder) => {
       this.ensureFolder(this.characterFolderPath(campaign.name, folder))
+
       characters.forEach((character) => {
         fs.writeFileSync(
           this.characterPath(campaign.name, folder, character.name),
@@ -86,6 +87,14 @@ export class TabletopImporter {
 
   private basePath() {
     return path.join(this.tabletopSaveDir, "Ven")
+  }
+
+  private ensureEmptyFolder(path: string) {
+    if(fs.existsSync(path)) {
+      fs.rmdirSync(path, { recursive: true });
+    } else {
+      fs.mkdirSync(path, { recursive: true });
+    }
   }
 
   private ensureFolder(path: string) {
