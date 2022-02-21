@@ -17,15 +17,22 @@ import Store from 'electron-store';
 let mainWindow: BrowserWindow | null = null;
 
 const config = new Store();
+const TABLETOP_DIR_KEY = "tabletop_dir"
 
-// const TMP_HARDCODED_TABLETOP_DIR = "/Users/notmyproblem/Library/Tabletop Simulator/Saves/Saved Objects"
+const configured = () => {
+  const storedTabletopValue = config.get(TABLETOP_DIR_KEY)
 
-// config.set("tabletop_dir", TMP_HARDCODED_TABLETOP_DIR)
+  return storedTabletopValue != undefined
+}
 
-const importer = new TabletopImporter(config.get("tabletop_dir") as string);
 
 ipcMain.on('import-campaign', async (event, arg) => {
+  const importer = new TabletopImporter(config.get(TABLETOP_DIR_KEY) as string);
   importer.importCampaign(arg)
+});
+
+ipcMain.on('update-tabletop-dir', async (event, arg) => {
+  config.set(TABLETOP_DIR_KEY, arg)
 });
 
 
@@ -77,7 +84,7 @@ const createWindow = async () => {
     },
   });
 
-  mainWindow.loadURL(resolveHtmlPath('index.html'));
+  mainWindow.loadURL(resolveHtmlPath('index.html', `configured=${configured()}`));
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {

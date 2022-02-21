@@ -8,6 +8,10 @@ contextBridge.exposeInMainWorld('electron', {
       console.log("Context bridge sending campaign")
       ipcRenderer.send('import-campaign', campaign);
     },
+    updateTabletopDir(dir) {
+      console.log("updating tabletop dir")
+      ipcRenderer.send('update-tabletop-dir', dir)
+    },
     on(channel, func) {
       const validChannels = ['ipc-example'];
       if (validChannels.includes(channel)) {
