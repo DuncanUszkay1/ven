@@ -1,0 +1,43 @@
+{
+  "Name": "Figurine_Custom",
+  "Transform": {
+    "posX": 21.560606,
+    "posY": 1.12704539,
+    "posZ": -13.3344488,
+    "rotX": -1.51356892E-06,
+    "rotY": 359.9916,
+    "rotZ": -6.40327062E-06,
+    "scaleX": 1.0,
+    "scaleY": 1.0,
+    "scaleZ": 1.0
+  },
+  "Nickname": "Name Error",
+  "Description": "",
+  "GMNotes": "",
+  "ColorDiffuse": {
+    "r": 0.0,
+    "g": 0.0,
+    "b": 0.0
+  },
+  "Locked": false,
+  "Grid": true,
+  "Snap": true,
+  "IgnoreFoW": false,
+  "Autoraise": true,
+  "Sticky": true,
+  "Tooltip": true,
+  "GridProjection": false,
+  "HideWhenFaceDown": false,
+  "Hands": false,
+  "CustomImage": {
+    "ImageURL": "http://cloud-3.steamusercontent.com/ugc/1028450629455607675/E0D661AAB8BF5C30119E7C87F4A82E16490E0F7B/",
+    "ImageSecondaryURL": "",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0
+  },
+  "XmlUI": "",
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "GUID": "7532fd"
+}
+  

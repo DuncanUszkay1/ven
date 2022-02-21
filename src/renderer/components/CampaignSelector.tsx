@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { Campaign, Character } from '../App';
-import { EMPTY_CAMPAIGN } from 'model/Campaign';
+import { EMPTY_CAMPAIGN, DUMMY_CAMPAIGN } from 'model/Campaign';
 
 export class CampaignSelector extends React.Component<
   { setCampaign: (campaign: Campaign) => void},
@@ -12,8 +12,8 @@ export class CampaignSelector extends React.Component<
 > {
 
   loadCampaign() {
-    // this.props.setCampaign(DUMMY_CAMPAIGN);
-    this.props.setCampaign(EMPTY_CAMPAIGN);
+    this.props.setCampaign(DUMMY_CAMPAIGN);
+    // this.props.setCampaign(EMPTY_CAMPAIGN);
   }
 
   render() {
