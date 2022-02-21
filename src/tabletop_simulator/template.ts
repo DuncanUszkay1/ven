@@ -55,7 +55,7 @@ export function mapFromTemplate(venMap: VenMap) {
           },
           "CustomImage": {
             ...loadTemplate(MAP_TILE_CUSTOM_IMAGE),
-            "ImageUrl": `https://dummyimage.com/100x100/${stripHexColor(tile.color)}/&text=%99` 
+            "ImageUrl": `https://dummyimage.com/100x100/${stripHexColor(tile.color)}/&text=+` 
           }
         }]
       }
