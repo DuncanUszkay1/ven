@@ -25,11 +25,11 @@ export class App extends React.Component<{}, AppState> {
     super(props)
 
     this.setCampaign = this.setCampaign.bind(this)
+    this.importCampaign = this.importCampaign.bind(this)
   }
 
   importCampaign(campaign: Campaign) {
-    console.log("App talking to electron window")
-    console.log(window)
+    console.log("importing campaign?")
     window.electron.ipcRenderer.importCampaign(campaign);
   }
 
@@ -47,8 +47,7 @@ export class App extends React.Component<{}, AppState> {
     if(this.state.campaign === undefined) {
       return <CampaignSelector setCampaign={this.setCampaign} />
     } else {
-      this.importCampaign(this.state.campaign)
-      return <Editor campaign={this.state.campaign}/> 
+      return <Editor campaign={this.state.campaign} tabletopImport={this.importCampaign}/> 
     }
   }
 }

@@ -37,33 +37,7 @@ export class CampaignSelector extends React.Component<
         <Button variant="contained" onClick={() => { this.loadCampaign() }}>
           Load Campaign
         </Button>
-        <IncrementButton />
       </Stack>
     </Box>
   }
 };
-
-// Temp component for testing purposes
-type IncrementState = {
-  counter: number;
-}
-class IncrementButton extends React.Component<{}, IncrementState> {
-  state = { counter: 1 };
-
-  sendTestMessage() {
-    window.electron.ipcRenderer.myPing();
-
-    this.setState((state) => ({
-      counter: state.counter + 1
-    }));
-  }
-
-  render() {
-    return <div>
-        <Button variant="contained" id="file-test" onClick={() => { this.sendTestMessage() } } >
-          Read our {this.state.counter} docs
-        </Button>
-      </div>
-  }
-}
-
