@@ -178,7 +178,7 @@ export const DUMMY_CAMPAIGN: Campaign = {
       tilePalette: []
     }]
   ]),
-  items: new Map<string, Character[]>([
+  items: new Map<string, Item[]>([
     ["Cool Guys", [
       {
         img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',

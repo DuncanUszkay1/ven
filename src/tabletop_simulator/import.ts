@@ -1,7 +1,7 @@
 import { Campaign } from "../model/Campaign";
 import fs from 'fs';
 import path from 'path';
-import { characterFromTemplate } from "./template";
+import { characterFromTemplate, itemFromTemplate } from "./template";
 
 export class TabletopImporter {
   tabletopSaveDir: string;
@@ -27,6 +27,17 @@ export class TabletopImporter {
         )
       })
     })
+
+    this.ensureFolder(this.itemBasePath(campaign.name));
+    campaign.items.forEach((items, folder) => {
+      this.ensureFolder(this.itemFolderPath(campaign.name, folder))
+      items.forEach((item) => {
+        fs.writeFileSync(
+          this.itemPath(campaign.name, folder, item.name),
+          itemFromTemplate(item)
+        )
+      })
+    })
   }
 
   private characterPath(campaignName: string, folder: string, characterName: string) {
@@ -39,6 +50,18 @@ export class TabletopImporter {
 
   private characterBasePath(campaignName: string) {
     return path.join(this.campaignPath(campaignName), "Characters")
+  }
+
+  private itemPath(campaignName: string, folder: string, itemName: string) {
+    return path.join(this.itemFolderPath(campaignName, folder), `${itemName}.json`)
+  }
+
+  private itemFolderPath(campaignName: string, folder: string) {
+    return path.join(this.itemBasePath(campaignName), folder)
+  }
+
+  private itemBasePath(campaignName: string) {
+    return path.join(this.campaignPath(campaignName), "Items")
   }
 
   private campaignPath(campaignName: string) {

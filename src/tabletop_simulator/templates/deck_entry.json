@@ -1,0 +1,9 @@
+{
+  "FaceURL": "https://raw.githubusercontent.com/elliottomlinson/cardmaster/master/res/card/generated/Adlib.png",
+  "BackURL": "https://raw.githubusercontent.com/elliottomlinson/cardmaster/master/res/art/back/blue.png",
+  "NumWidth": 1,
+  "NumHeight": 1,
+  "BackIsHidden": true,
+  "UniqueBack": false,
+  "Type": 0
+}
