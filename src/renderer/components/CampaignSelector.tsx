@@ -7,12 +7,13 @@ import { Campaign, Character } from '../App';
 import { EMPTY_CAMPAIGN, DUMMY_CAMPAIGN } from 'model/Campaign';
 
 export class CampaignSelector extends React.Component<
-  { setCampaign: (campaign: Campaign) => void},
+  { setCampaign: (campaign: Campaign) => void, loadCampaign: () => void},
   {}
 > {
 
   loadCampaign() {
-    this.props.setCampaign(DUMMY_CAMPAIGN);
+    this.props.loadCampaign();
+    // this.props.setCampaign(DUMMY_CAMPAIGN);
     // this.props.setCampaign(EMPTY_CAMPAIGN);
   }
 

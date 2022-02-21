@@ -8,7 +8,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, ipcRenderer, dialog } from 'electron';
 import { resolveHtmlPath } from './util';
 import { TabletopImporter } from '../tabletop_simulator/import';
 import { DUMMY_CAMPAIGN } from '../model/Campaign';
@@ -39,6 +39,17 @@ ipcMain.on('save-campaign', async (event, arg) => {
     console.log(arg)
     if(filename !== undefined) {
       fs.writeFileSync(filename, JSON.stringify(arg, replacer, 2));
+    }
+  }
+});
+
+ipcMain.on('load-campaign-request', async (event) => {
+  if(mainWindow !== null) {
+    const filename = dialog.showOpenDialogSync(mainWindow, { filters: [{name: "Ven Campaigns", extensions: [".json"]}]})
+    if(filename !== undefined) {
+      const raw_campaign = fs.readFileSync(filename[0]).toString();
+      const campaign = JSON.parse(raw_campaign, reviver);
+      event.sender.send('load-campaign', campaign)
     }
   }
 });

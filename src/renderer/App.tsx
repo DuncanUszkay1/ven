@@ -13,7 +13,9 @@ declare global {
       ipcRenderer: {
         importCampaign: (campaign: Campaign) => void;
         saveCampaign: (campaign: Campaign) => void;
+        loadCampaign: () => void;
         updateTabletopDir: (dir: string) => void;
+        onCampaignLoad: (func: (campaign: Campaign) => void) => void; 
       }
     }
   }
@@ -24,11 +26,17 @@ const initiallyConfigured = query.get('configured') == 'true';
 
 export type AppState = {
   campaign?: Campaign,
-  configured: boolean
+  configured: boolean,
 }
 
-export class App extends React.Component<{}, AppState> {
+export class App extends React.Component<{cool: boolean}, AppState> {
   state = { campaign: undefined, configured: initiallyConfigured }
+
+  componentDidMount() {
+    window.electron.ipcRenderer.onCampaignLoad((campaign: Campaign) => {
+      this.setState({ campaign })
+    })
+  }
 
   constructor(props: {}) {
     super(props)
@@ -37,6 +45,7 @@ export class App extends React.Component<{}, AppState> {
     this.importCampaign = this.importCampaign.bind(this)
     this.updateTabletopDir = this.updateTabletopDir.bind(this)
     this.saveCampaign = this.saveCampaign.bind(this)
+    this.loadCampaign = this.loadCampaign.bind(this)
   }
 
   importCampaign(campaign: Campaign) {
@@ -58,10 +67,16 @@ export class App extends React.Component<{}, AppState> {
     window.electron.ipcRenderer.saveCampaign(campaign);
   }
 
+  loadCampaign() {
+    window.electron.ipcRenderer.loadCampaign();
+  }
+
   render() {
+    console.log("rendering campaign...")
+    console.log(this.state.campaign)
     if(this.state.configured) {
       if(this.state.campaign === undefined) {
-        return <CampaignSelector setCampaign={this.setCampaign} />
+        return <CampaignSelector setCampaign={this.setCampaign} loadCampaign={this.loadCampaign}/>
       } else {
         return <Editor campaign={this.state.campaign} tabletopImport={this.importCampaign} saveCampaign={this.saveCampaign}/> 
       }

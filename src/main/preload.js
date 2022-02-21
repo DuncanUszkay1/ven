@@ -10,9 +10,15 @@ contextBridge.exposeInMainWorld('electron', {
     saveCampaign(campaign) {
       ipcRenderer.send('save-campaign', campaign);
     },
+    loadCampaign() {
+      ipcRenderer.send('load-campaign-request');
+    },
     updateTabletopDir(dir) {
       console.log("updating tabletop dir")
       ipcRenderer.send('update-tabletop-dir', dir)
+    },
+    onCampaignLoad(func) {
+      ipcRenderer.on('load-campaign', (event, campaign) => func(campaign))
     },
     on(channel, func) {
       const validChannels = ['ipc-example'];
