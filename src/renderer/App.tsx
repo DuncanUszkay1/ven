@@ -2,7 +2,7 @@ import { CampaignSelector } from './components/CampaignSelector';
 import { dialog } from 'electron';
 import React from 'react';
 import { Editor } from './components/Editor';
-import { Campaign } from '../model/Campaign';
+import { Campaign, EMPTY_CAMPAIGN } from '../model/Campaign';
 export { Campaign, Character, Tile, Item, VOID_TILE, Background } from '../model/Campaign';
 import querystring from 'querystring'
 import { Config } from './components/Config';
@@ -45,6 +45,7 @@ export class App extends React.Component<{cool: boolean}, AppState> {
     this.importCampaign = this.importCampaign.bind(this)
     this.updateTabletopDir = this.updateTabletopDir.bind(this)
     this.saveCampaign = this.saveCampaign.bind(this)
+    this.newCampaign = this.newCampaign.bind(this);
     this.loadCampaign = this.loadCampaign.bind(this)
   }
 
@@ -67,6 +68,10 @@ export class App extends React.Component<{cool: boolean}, AppState> {
     window.electron.ipcRenderer.saveCampaign(campaign);
   }
 
+  newCampaign(name: string) {
+    this.setState({ campaign: { ...EMPTY_CAMPAIGN, name }})
+  }
+
   loadCampaign() {
     window.electron.ipcRenderer.loadCampaign();
   }
@@ -76,7 +81,7 @@ export class App extends React.Component<{cool: boolean}, AppState> {
     console.log(this.state.campaign)
     if(this.state.configured) {
       if(this.state.campaign === undefined) {
-        return <CampaignSelector setCampaign={this.setCampaign} loadCampaign={this.loadCampaign}/>
+        return <CampaignSelector setCampaign={this.setCampaign} loadCampaign={this.loadCampaign} newCampaign={this.newCampaign} />
       } else {
         return <Editor campaign={this.state.campaign} tabletopImport={this.importCampaign} saveCampaign={this.saveCampaign}/> 
       }

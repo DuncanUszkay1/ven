@@ -78,7 +78,7 @@ export class ItemEditor extends React.Component<
         selected={this.state.folder}
         select={this.setFolder}
         key={this.state.folder}
-        itemName="Item"
+        itemName="Item Folder"
         new={this.newFolder}/>  
       <Divider orientation="vertical" flexItem />
       {this.innerContent()} 

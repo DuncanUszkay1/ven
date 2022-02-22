@@ -5,16 +5,44 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { Campaign, Character } from '../App';
 import { EMPTY_CAMPAIGN, DUMMY_CAMPAIGN } from 'model/Campaign';
+import { Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { timeStamp } from 'console';
 
 export class CampaignSelector extends React.Component<
-  { setCampaign: (campaign: Campaign) => void, loadCampaign: () => void},
-  {}
+  { setCampaign: (campaign: Campaign) => void, loadCampaign: () => void, newCampaign: (name: string) => void},
+  { name: string | null, createModal: boolean }
 > {
+  state = { name: null, createModal: false}
+
+  constructor(props: any) {
+    super(props)
+
+    this.loadCampaign = this.loadCampaign.bind(this);
+    this.closeCreateModal = this.closeCreateModal.bind(this);
+    this.openCreateModal = this.openCreateModal.bind(this);
+    this.updateName = this.updateName.bind(this);
+    this.submitCreateModal = this.submitCreateModal.bind(this);
+  }
 
   loadCampaign() {
     this.props.loadCampaign();
-    // this.props.setCampaign(DUMMY_CAMPAIGN);
-    // this.props.setCampaign(EMPTY_CAMPAIGN);
+  }
+
+  closeCreateModal() {
+    this.setState({ createModal: false, name: null })
+  }
+
+  openCreateModal() {
+    this.setState({ createModal: true })
+  }
+
+  updateName(event: any) {
+    this.setState({ name: event.target.value })
+  }
+
+  submitCreateModal() {
+    this.props.newCampaign(this.state.name || "Default")
+    this.closeCreateModal();
   }
 
   render() {
@@ -32,13 +60,32 @@ export class CampaignSelector extends React.Component<
       <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" sx= {{
         pt: "20px"
       }}>
-        <Button variant="contained">
+        <Button variant="contained" onClick={this.openCreateModal}>
           New Campaign
         </Button>
-        <Button variant="contained" onClick={() => { this.loadCampaign() }}>
+        <Button variant="contained" onClick={() => { this.props.loadCampaign() }}>
           Load Campaign
         </Button>
       </Stack>
+      <Dialog open={this.state.createModal} onClose={this.closeCreateModal}>
+        <DialogTitle>Create New Campaign</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Name"
+            type="text"
+            fullWidth
+            variant="standard"
+            onChange={this.updateName}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.closeCreateModal}>Cancel</Button>
+          <Button onClick={this.submitCreateModal}>Create</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   }
 };

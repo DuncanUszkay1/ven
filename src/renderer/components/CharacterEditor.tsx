@@ -78,7 +78,7 @@ export class CharacterEditor extends React.Component<
         selected={this.state.folder}
         select={this.setFolder}
         key={this.state.folder}
-        itemName="Character"
+        itemName="Character Folder"
         new={this.newFolder}/>  
       <Divider orientation="vertical" flexItem />
       {this.innerContent()} 
