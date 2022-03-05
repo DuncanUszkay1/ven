@@ -161,7 +161,7 @@ const CHECKERBOARD_TILES = NEW_MAP_TILES.map((row, rowIndex) => {
 
 export const EMPTY_CAMPAIGN: Campaign = {
   name: "The Path of Misery",
-  maps: new Map<string, VenMap>([["Default", NEW_MAP]]),
+  maps: new Map<string, VenMap>([]),
   characters: new Map<string, Character[]>([["Default", []]]),
   items: new Map<string, Item[]>([["Default", []]]),
 } 

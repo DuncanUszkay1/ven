@@ -3,7 +3,7 @@ import { TileMap } from './TileMap';
 import { TileForm } from './TileForm';
 import { Background, Tile } from '../App';
 import { Box } from '@mui/system';
-import { Divider, Stack, Tab, Tabs } from '@mui/material';
+import { Button, Divider, Stack, Tab, Tabs, Typography } from '@mui/material';
 import { TabPanel } from './TabPanel';
 import { BackgroundEditor } from './BackgroundEditor';
 import { SelectedList } from './SelectableList';
@@ -138,7 +138,13 @@ export class MapEditor extends React.Component<
   }
 
   innerContent() {
-    return <Box sx={{ width: '100%' }}>
+    if(this.selectedMap() == null) {
+      return <Stack sx={{ width: '100%', marginTop: '15px', justifyContent: 'center', alignItems: 'center' }}>
+        <Typography variant="h3" sx={{marginBottom: '15px'}}>No Maps to Display</Typography>
+      </Stack>
+    }
+
+    return <Box sx={{ width: '100%' }}> 
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={this.state.tabValue} onChange={this.handleTabEvent} aria-label="basic tabs example">
           <Tab label="Backgrounds" />
