@@ -4,6 +4,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Dialog
 import { IconButton, ImageList, ImageListItem, ImageListItemBar } from '@mui/material';
 import { Background } from "../App";
 import DeleteIcon from '@mui/icons-material/Delete';
+import { stripQueryParams } from 'renderer/util';
 
 export class BackgroundEditor extends React.Component<{
   backgrounds: Background[],
@@ -45,7 +46,7 @@ export class BackgroundEditor extends React.Component<{
     } else {
       this.props.createBackground({
         name: this.state.createDialogName,
-        img: this.state.createDialogImg
+        img: stripQueryParams(this.state.createDialogImg) 
       });
       this.setState({createDialogName: null, createDialogImg: null, createDialogOpen: false})
     }

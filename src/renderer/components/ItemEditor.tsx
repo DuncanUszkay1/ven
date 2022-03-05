@@ -6,6 +6,7 @@ import { Button, Divider, IconButton, Input, TextField } from '@mui/material';
 import { Item } from "../App";
 import { ArrowBack } from '@mui/icons-material';
 import { Box } from '@mui/system';
+import { stripQueryParams } from 'renderer/util';
 
 export class ItemEditor extends React.Component<
   {
@@ -116,7 +117,7 @@ class EditItemForm extends React.Component<{
   }
 
   editImg(event: any) {
-    this.setState({item: { ...this.state.item, img: event.target.value }})
+    this.setState({item: { ...this.state.item, img: stripQueryParams(event.target.value) }})
   }
 
   render() {

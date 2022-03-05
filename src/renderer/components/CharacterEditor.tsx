@@ -6,6 +6,7 @@ import { Button, Divider, IconButton, Input, TextField } from '@mui/material';
 import { Character } from "../App";
 import { ArrowBack } from '@mui/icons-material';
 import { Box } from '@mui/system';
+import { stripQueryParams } from 'renderer/util';
 
 export class CharacterEditor extends React.Component<
   {
@@ -116,7 +117,7 @@ class EditCharacterForm extends React.Component<{
   }
 
   editImg(event: any) {
-    this.setState({character: { ...this.state.character, img: event.target.value }})
+    this.setState({character: { ...this.state.character, img: stripQueryParams(event.target.value) }})
   }
 
   render() {
