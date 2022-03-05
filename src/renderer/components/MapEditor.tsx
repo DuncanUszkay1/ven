@@ -46,11 +46,32 @@ export class MapEditor extends React.Component<
 
   saveTile(tile: Tile) {
     const oldMap = this.selectedMap();
-    const newMap: VenMap = {...oldMap, tilePalette: oldMap.tilePalette.map((t) => {
-      return t.id === tile.id ? tile : t 
-    })}
+    const newPalette = oldMap.tilePalette.map((t) => { return t.id == tile.id ? tile : t })
+    const newMap: VenMap = {
+      ...oldMap,
+      tilePalette: newPalette,
+      tiles: this.syncTileMapToPalette(oldMap.tiles, newPalette) 
+    }
 
     this.props.saveMap(newMap)
+  }
+
+  deleteTile(tileID: number) {
+    const oldMap = this.selectedMap();
+    const newPalette = oldMap.tilePalette.filter((t) => { return t.id != tileID }) 
+    const newMap: VenMap = {...oldMap, tilePalette: newPalette, tiles: this.syncTileMapToPalette(oldMap.tiles, newPalette) }
+
+    this.props.saveMap(newMap)
+  }
+
+  syncTileMapToPalette(tiles: Tile[][], tilePalette: Tile[]) {
+    const tileMap = tiles.map((row) => {
+      return row.map((tile) => {
+        return tilePalette.find((t) => { return t.id == tile.id }) || VOID_TILE
+      })
+    })
+
+    return tileMap
   }
 
   findTilePaletteID() {
@@ -82,13 +103,6 @@ export class MapEditor extends React.Component<
 
   closeTile() {
     this.setState({ selectedTile: null })
-  }
-
-  deleteTile(tileID) {
-    const oldMap = this.selectedMap();
-    const newMap: VenMap = {...oldMap, tilePalette: oldMap.tilePalette.filter((t) => { return t.id != tileID })}
-
-    this.props.saveMap(newMap)
   }
 
   handleTabEvent(_: any, newValue: number) {
