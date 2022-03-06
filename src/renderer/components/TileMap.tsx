@@ -52,7 +52,7 @@ export class TileMap extends React.Component<{
   constructor(props: any) {
     super(props);
 
-    this.clearSelection = this.clearSelection.bind(this);
+    this.completeSelection = this.completeSelection.bind(this);
     this.startSelection = this.startSelection.bind(this);
     this.select = this.select.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
@@ -76,7 +76,7 @@ export class TileMap extends React.Component<{
           selected={mapSection.selected}
           row={rowIndex}
           column={columnIndex}
-          onMouseUp={this.clearSelection}
+          onMouseUp={this.completeSelection}
           onMouseDown={this.startSelection}
           onMouseMove={this.select}
           key={`${rowIndex} ${columnIndex}`}
@@ -133,9 +133,9 @@ export class TileMap extends React.Component<{
     return [VOID_TILE].concat(this.props.tilePalette).sort((a, b) => { return a.id - b.id })
   }
 
-  clearSelection() {
+  completeSelection() {
     this.setState({
-      selection: null
+      selection: null 
     })
   }
 
@@ -145,7 +145,7 @@ export class TileMap extends React.Component<{
         mapSections: this.mapRegion(state.mapSections, column, row, column, row, (mapSection, inRegion) => {
           return {
             tile: mapSection.tile,
-            selected: inRegion 
+            selected: mapSection.selected || inRegion 
           }
         }),
         selection: {
@@ -175,7 +175,7 @@ export class TileMap extends React.Component<{
             (mapSection: MapSectionData, inRegion: boolean) => {
               return {
                 tile: mapSection.tile,
-                selected: inRegion 
+                selected: mapSection.selected || inRegion 
               }
             }
           ),
@@ -194,6 +194,9 @@ export class TileMap extends React.Component<{
     if (e.key === 'Enter') {
       this.fill();
       this.resetCode();
+    } else if (e.key === 'Escape') {
+      this.resetCode();
+      this.clearSelection();
     } else if (e.key.length == 1 || e.key === "Backspace") {
       this.updateCode(e.key);
     }
@@ -236,6 +239,21 @@ export class TileMap extends React.Component<{
     const idMatch = tile.id.toString().startsWith(normalizedCode);
 
     return nameMatch || idMatch
+  }
+
+  clearSelection() {
+    this.setState((state) => {
+      return {
+        mapSections: state.mapSections.map((row) => {
+          return row.map((mapSection: MapSectionData) => {
+            return {
+              tile: mapSection.tile,
+              selected: false
+            }
+          })
+        })
+      }
+    });
   }
 
   fill() {
