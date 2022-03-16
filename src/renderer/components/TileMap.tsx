@@ -87,7 +87,7 @@ export class TileMap extends React.Component<{
     const tiles = this.state.filteredTilePalette.map((tile) => {
       return <ListItemButton onClick={() => { this.props.editTile(tile) }}>
         <ListItemIcon>
-          <Square sx={{ color: tile.color }}/>
+          {tile.img ? <img width="20px" height="20px" style={{marginLeft: "3px"}} src={tile.img} alt={tile.name} /> : <Square sx={{ color: tile.color }}/>}
         </ListItemIcon>
         <ListItemText primary={`${tile.id}. ${tile.name}`} />
       </ListItemButton>
