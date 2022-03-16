@@ -11,18 +11,20 @@ export class TileForm extends React.Component<{
   save: (tile: Tile) => void,
   quit: () => void,
   delete: (id: number) => void 
-}, { color: string, name: string, description: string, dmNotes: string }> {
+}, { color: string, name: string, description: string, dmNotes: string, img: string | undefined }> {
   state = {
     color: this.props.tile.color,
     name: this.props.tile.name,
     description: this.props.tile.description,
-    dmNotes: this.props.tile.notes
+    dmNotes: this.props.tile.notes,
+    img: this.props.tile.img 
   }
 
   constructor(props: any) {
     super(props)
 
     this.onNameChange = this.onNameChange.bind(this)
+    this.onImgChange = this.onImgChange.bind(this)
     this.onDescriptionChange = this.onDescriptionChange.bind(this)
     this.onDMNotesChange = this.onDMNotesChange.bind(this)
     this.onColorChange = this.onColorChange.bind(this)
@@ -38,18 +40,25 @@ export class TileForm extends React.Component<{
     this.setState({ name: event.target.value })
   }
 
+  onImgChange(event) {
+    console.log("change")
+    console.log(event.target.value)
+    this.setState({ img: event.target.value })
+  }
+
   onDescriptionChange(event) {
     this.setState({ description: event.target.value })
   }
 
   onDMNotesChange(event) {
-    this.setState({ notes: event.target.value })
+    this.setState({ dmNotes: event.target.value })
   }
 
   save() {
     this.props.save({
       name: this.state.name,
       color: this.state.color,
+      img: this.state.img,
       description: this.state.description,
       notes: this.state.dmNotes,
       id: this.props.tile.id
@@ -80,6 +89,13 @@ export class TileForm extends React.Component<{
           label="Name"
           onChange={this.onNameChange}
           defaultValue={this.props.tile.name}
+        />
+        <TextField
+          fullWidth
+          id="outlined"
+          label="Image URL (optional)"
+          onChange={this.onImgChange}
+          defaultValue={this.props.tile.img}
         />
         <TextField
           fullWidth

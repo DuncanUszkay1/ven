@@ -114,6 +114,7 @@ export type Background = {
 export type Tile = {
   name: string;
   color: string;
+  img?: string;
   notes: string;
   description: string;
   id: number;

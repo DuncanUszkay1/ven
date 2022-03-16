@@ -307,11 +307,16 @@ class MapSection extends React.Component<{
   onMouseMove: (row: number, column: number) => void,
 }> {
   render() {
+    const color = this.props.selected ? HIGHLIGHT_COLOR : this.props.tile.color
+    const backgroundImage = (this.props.selected || !this.props.tile.img) ? "none" : `url(${this.props.tile.img})`
+
     return <div 
       style={{
         width: `${SECTION_SIZE}px`,
         height: `${SECTION_SIZE}px`,
-        backgroundColor: this.props.selected ? HIGHLIGHT_COLOR : this.props.tile.color,
+        backgroundColor: color,
+        backgroundImage: backgroundImage,
+        backgroundSize: "cover",
         border: `${this.props.selected ? HIGHLIGHT_BOX_COLOR : "grey"} solid 1px`,
         userSelect: "none"
       }}
