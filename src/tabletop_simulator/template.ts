@@ -43,6 +43,7 @@ export function mapFromTemplate(venMap: VenMap) {
       if(tile.id == VOID_TILE.id) {
         return []
       } else {
+        const tileImage = tile.img || `https://dummyimage.com/100x100/${stripHexColor(tile.color)}/&text=+`;
         return [{
           ...loadTemplate(MAP_TILE_TEMPLATE),
           "Nickname": tile.name,
@@ -55,7 +56,7 @@ export function mapFromTemplate(venMap: VenMap) {
           },
           "CustomImage": {
             ...loadTemplate(MAP_TILE_CUSTOM_IMAGE),
-            "ImageUrl": `https://dummyimage.com/100x100/${stripHexColor(tile.color)}/&text=+` 
+            "ImageUrl": tileImage 
           }
         }]
       }
