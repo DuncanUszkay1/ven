@@ -39,17 +39,6 @@ export class App extends React.Component<{cool: boolean}, AppState> {
     })
   }
 
-  constructor(props: {}) {
-    super(props)
-
-    this.setCampaign = this.setCampaign.bind(this)
-    this.importCampaign = this.importCampaign.bind(this)
-    this.updateTabletopDir = this.updateTabletopDir.bind(this)
-    this.saveCampaign = this.saveCampaign.bind(this)
-    this.newCampaign = this.newCampaign.bind(this);
-    this.loadCampaign = this.loadCampaign.bind(this)
-  }
-
   importCampaign(campaign: Campaign) {
     window.electron.ipcRenderer.importCampaign(campaign);
   }
@@ -80,12 +69,12 @@ export class App extends React.Component<{cool: boolean}, AppState> {
   render() {
     if(this.state.configured) {
       if(this.state.campaign === undefined) {
-        return <CampaignSelector setCampaign={this.setCampaign} loadCampaign={this.loadCampaign} newCampaign={this.newCampaign} />
+        return <CampaignSelector loadCampaign={this.loadCampaign.bind(this)} newCampaign={this.newCampaign.bind(this)} />
       } else {
-        return <Editor campaign={this.state.campaign} tabletopImport={this.importCampaign} saveCampaign={this.saveCampaign}/> 
+        return <Editor campaign={this.state.campaign} tabletopImport={this.importCampaign.bind(this)} saveCampaign={this.saveCampaign.bind(this)}/> 
       }
     } else {
-      return <Config updateTabletopDir={this.updateTabletopDir}/>
+      return <Config updateTabletopDir={this.updateTabletopDir.bind(this)}/>
     }
   }
 }

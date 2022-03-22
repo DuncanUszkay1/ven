@@ -9,7 +9,7 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@m
 import { timeStamp } from 'console';
 
 export class CampaignSelector extends React.Component<
-  { setCampaign: (campaign: Campaign) => void, loadCampaign: () => void, newCampaign: (name: string) => void},
+  { loadCampaign: () => void, newCampaign: (name: string) => void},
   { name: string | null, createModal: boolean }
 > {
   state = { name: null, createModal: false}
