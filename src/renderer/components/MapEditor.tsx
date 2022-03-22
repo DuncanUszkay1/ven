@@ -21,25 +21,6 @@ export class MapEditor extends React.Component<
 > {
   state = { selectedTile: null, tabValue: 0, selectedMap: this.props.maps.keys().next().value }
 
-  constructor(props: any) {
-    super(props);
-
-    this.editTile = this.editTile.bind(this);
-    this.saveTile = this.saveTile.bind(this);
-    this.closeTile = this.closeTile.bind(this);
-    this.deleteTile = this.deleteTile.bind(this);
-    this.handleTabEvent = this.handleTabEvent.bind(this);
-    this.selectMap = this.selectMap.bind(this);
-    this.updateTileMap = this.updateTileMap.bind(this);
-    this.newMap = this.newMap.bind(this);
-    this.newTile = this.newTile.bind(this);
-    this.createBackground = this.createBackground.bind(this);
-    this.deleteBackground = this.deleteBackground.bind(this);
-    this.findTilePaletteID = this.findTilePaletteID.bind(this);
-    this.savePalette = this.savePalette.bind(this);
-    this.loadPalette = this.loadPalette.bind(this);
-  }
-
   componentDidMount() {
     window.electron.ipcRenderer.onTilesetLoad((tileset: Tile[]) => {
       const oldMap = this.selectedMap();
@@ -164,7 +145,7 @@ export class MapEditor extends React.Component<
 
     return <Box sx={{ width: '100%' }}> 
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={this.state.tabValue} onChange={this.handleTabEvent} aria-label="basic tabs example">
+        <Tabs value={this.state.tabValue} onChange={this.handleTabEvent.bind(this)} aria-label="basic tabs example">
           <Tab label="Backgrounds" />
           <Tab label="Map" />
         </Tabs>
@@ -172,23 +153,23 @@ export class MapEditor extends React.Component<
       <TabPanel value={this.state.tabValue} index={0}>
         <BackgroundEditor 
           backgrounds={this.selectedMap().backgrounds}
-          deleteBackground={this.deleteBackground}
-          createBackground={this.createBackground}
+          deleteBackground={this.deleteBackground.bind(this)}
+          createBackground={this.createBackground.bind(this)}
         />
       </TabPanel>
       <TabPanel value={this.state.tabValue} index={1}>
         {
           this.state.selectedTile ?
-            <TileForm tile={this.state.selectedTile} save={this.saveTile} quit={this.closeTile} delete={this.deleteTile}/> :
+            <TileForm tile={this.state.selectedTile} save={this.saveTile.bind(this)} quit={this.closeTile.bind(this)} delete={this.deleteTile.bind(this)}/> :
             <TileMap
               tileMapping={this.selectedMap().tiles}
               tilePalette={this.selectedMap().tilePalette}
-              editTile={this.editTile}
-              addTile={this.newTile}
+              editTile={this.editTile.bind(this)}
+              addTile={this.newTile.bind(this)}
               key={this.selectedMap().name}
-              saveTileMapping={this.updateTileMap}
-              savePalette={this.savePalette}
-              loadPalette={this.loadPalette}
+              saveTileMapping={this.updateTileMap.bind(this)}
+              savePalette={this.savePalette.bind(this)}
+              loadPalette={this.loadPalette.bind(this)}
             />
         }
       </TabPanel>
@@ -200,9 +181,9 @@ export class MapEditor extends React.Component<
       <SelectedList
         items={Array.from(this.props.maps.keys())}
         selected={this.state.selectedMap}
-        select={this.selectMap}
+        select={this.selectMap.bind(this)}
         itemName="Map"
-        new={this.newMap}
+        new={this.newMap.bind(this)}
       />  
       <Divider orientation="vertical" flexItem />
       {this.innerContent()} 

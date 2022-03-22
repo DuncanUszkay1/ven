@@ -1,6 +1,6 @@
 import React from 'react';
 import Stack from '@mui/material/Stack';
-import { Button, Divider, IconButton, Input, TextField } from '@mui/material';
+import { Button, IconButton, TextField } from '@mui/material';
 import { Tile } from "../App";
 import { ArrowBack } from '@mui/icons-material';
 import { Box } from '@mui/system';
@@ -20,37 +20,23 @@ export class TileForm extends React.Component<{
     img: this.props.tile.img 
   }
 
-  constructor(props: any) {
-    super(props)
-
-    this.onNameChange = this.onNameChange.bind(this)
-    this.onImgChange = this.onImgChange.bind(this)
-    this.onDescriptionChange = this.onDescriptionChange.bind(this)
-    this.onDMNotesChange = this.onDMNotesChange.bind(this)
-    this.onColorChange = this.onColorChange.bind(this)
-    this.save = this.save.bind(this)
-    this.delete = this.delete.bind(this)
-  }
-
-  onColorChange(event) {
+  onColorChange(event: any) {
     this.setState({ color: event.hex  })
   }
 
-  onNameChange(event) {
+  onNameChange(event: any) {
     this.setState({ name: event.target.value })
   }
 
-  onImgChange(event) {
-    console.log("change")
-    console.log(event.target.value)
+  onImgChange(event: any) {
     this.setState({ img: event.target.value })
   }
 
-  onDescriptionChange(event) {
+  onDescriptionChange(event: any) {
     this.setState({ description: event.target.value })
   }
 
-  onDMNotesChange(event) {
+  onDMNotesChange(event: any) {
     this.setState({ dmNotes: event.target.value })
   }
 
@@ -82,36 +68,36 @@ export class TileForm extends React.Component<{
         <ArrowBack />
       </IconButton>
       <Stack spacing={2} sx={{alignItems: "center", justifyContent: "center", width: "100%", maxWidth: "600px", marginLeft: "10px", marginRight: "10px"}}>
-        <ChromePicker color={this.state.color} disableAlpha={true} onChange={this.onColorChange}/>
+        <ChromePicker color={this.state.color} disableAlpha={true} onChange={this.onColorChange.bind(this)}/>
         <TextField
           fullWidth
           id="outlined-required"
           label="Name"
-          onChange={this.onNameChange}
+          onChange={this.onNameChange.bind(this)}
           defaultValue={this.props.tile.name}
         />
         <TextField
           fullWidth
           id="outlined"
           label="Image URL (optional)"
-          onChange={this.onImgChange}
+          onChange={this.onImgChange.bind(this)}
           defaultValue={this.props.tile.img}
         />
         <TextField
           fullWidth
           id="outlined-required"
           label="Description"
-          onChange={this.onDescriptionChange}
+          onChange={this.onDescriptionChange.bind(this)}
           defaultValue={this.props.tile.description}
         />
         <TextField
           fullWidth
           id="outlined-required"
           label="DM Notes"
-          onChange={this.onDMNotesChange}
+          onChange={this.onDMNotesChange.bind(this)}
           defaultValue={this.props.tile.notes}
         />
-        <Button variant="text" onClick={this.delete}>Delete</Button> 
+        <Button variant="text" onClick={this.delete.bind(this)}>Delete</Button> 
       </Stack>
     </Box>
   }

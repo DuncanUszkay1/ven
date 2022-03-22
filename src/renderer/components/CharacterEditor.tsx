@@ -20,17 +20,6 @@ export class CharacterEditor extends React.Component<
 > {
   state = { selectedCharacter: undefined, folder: this.props.characters.keys().next().value }
 
-  constructor(props: any) {
-    super(props);
-
-    this.editCharacter = this.editCharacter.bind(this);
-    this.saveCharacter = this.saveCharacter.bind(this);
-    this.createCharacter = this.createCharacter.bind(this);
-    this.deleteCharacter = this.deleteCharacter.bind(this);
-    this.setFolder = this.setFolder.bind(this);
-    this.newFolder = this.newFolder.bind(this);
-  }
-
   editCharacter(character: Character) {
     this.setState({selectedCharacter: character});
   }
@@ -57,9 +46,9 @@ export class CharacterEditor extends React.Component<
       />
     } else {
       return <CharacterExplorer 
-        editCharacter={this.editCharacter}
+        editCharacter={this.editCharacter.bind(this)}
         characters={this.props.characters.get(this.state.folder) || []}
-        createCharacter={this.createCharacter}
+        createCharacter={this.createCharacter.bind(this)}
       />
     }
   }
@@ -77,10 +66,10 @@ export class CharacterEditor extends React.Component<
       <SelectedList
         items={Array.from(this.props.characters.keys())}
         selected={this.state.folder}
-        select={this.setFolder}
+        select={this.setFolder.bind(this)}
         key={this.state.folder}
         itemName="Character Folder"
-        new={this.newFolder}/>  
+        new={this.newFolder.bind(this)}/>  
       <Divider orientation="vertical" flexItem />
       {this.innerContent()} 
     </Stack> 
@@ -94,15 +83,6 @@ class EditCharacterForm extends React.Component<{
   delete: (uuid: string) => void
 }, {character: Character}> {
   state = { character: this.props.character }
-
-  constructor(props: any) {
-    super(props);
-
-    this.editName = this.editName.bind(this);
-    this.editDescription = this.editDescription.bind(this);
-    this.editDMNotes = this.editDMNotes.bind(this);
-    this.editImg = this.editImg.bind(this);
-  }
 
   editName(event: any) {
     this.setState({character: { ...this.state.character, name: event.target.value }})
@@ -146,7 +126,7 @@ class EditCharacterForm extends React.Component<{
           id="outlined-required"
           label="Image URL"
           defaultValue={this.state.character.img}
-          onChange={this.editImg}
+          onChange={this.editImg.bind(this)}
         />
 
         <TextField
@@ -154,7 +134,7 @@ class EditCharacterForm extends React.Component<{
           id="outlined-required"
           label="Name"
           defaultValue={this.state.character.name}
-          onChange={this.editName}
+          onChange={this.editName.bind(this)}
         />
         <TextField
           fullWidth
@@ -162,7 +142,7 @@ class EditCharacterForm extends React.Component<{
           id="outlined-required"
           label="Description"
           defaultValue={this.state.character.description}
-          onChange={this.editDescription}
+          onChange={this.editDescription.bind(this)}
         />
         <TextField
           fullWidth
@@ -170,7 +150,7 @@ class EditCharacterForm extends React.Component<{
           id="outlined-required"
           label="DM Notes"
           defaultValue={this.state.character.dmNotes}
-          onChange={this.editDMNotes}
+          onChange={this.editDMNotes.bind(this)}
         />
         <Button variant="text" onClick={() => {
           this.props.delete(this.props.character.uuid)

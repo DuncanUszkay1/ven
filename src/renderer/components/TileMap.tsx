@@ -49,17 +49,6 @@ export class TileMap extends React.Component<{
     refreshPaletteOnRender: false
   }
 
-  constructor(props: any) {
-    super(props);
-
-    this.completeSelection = this.completeSelection.bind(this);
-    this.startSelection = this.startSelection.bind(this);
-    this.select = this.select.bind(this);
-    this.onKeyDown = this.onKeyDown.bind(this);
-    this.addTile = this.addTile.bind(this);
-    this.loadPalette = this.loadPalette.bind(this);
-  }
-
   componentDidMount() {
     window.electron.ipcRenderer.onTilesetLoad(() => {
       this.setState({ refreshPaletteOnRender: true });
@@ -80,7 +69,6 @@ export class TileMap extends React.Component<{
   }
 
   loadPalette() {
-    console.log("loadPalette called");
     this.props.loadPalette();
     this.setState({
       refreshPaletteOnRender: true
@@ -88,7 +76,6 @@ export class TileMap extends React.Component<{
   }
 
   render() {
-    console.log("rendering tilemap");
     const mapSections = this.state.mapSections.map((row, rowIndex) => {
       return row.map((mapSection: MapSectionData, columnIndex) => {
         return <MapSection
@@ -96,9 +83,9 @@ export class TileMap extends React.Component<{
           selected={mapSection.selected}
           row={rowIndex}
           column={columnIndex}
-          onMouseUp={this.completeSelection}
-          onMouseDown={this.startSelection}
-          onMouseMove={this.select}
+          onMouseUp={this.completeSelection.bind(this)}
+          onMouseDown={this.startSelection.bind(this)}
+          onMouseMove={this.select.bind(this)}
           key={`${rowIndex} ${columnIndex}`}
         />
       })
@@ -122,7 +109,7 @@ export class TileMap extends React.Component<{
         />
         <List component="nav" aria-label="main mailbox folders">
           {tiles}
-          <ListItemButton onClick={this.addTile}>
+          <ListItemButton onClick={this.addTile.bind(this)}>
             <ListItemIcon>
               <AddCircleIcon />
             </ListItemIcon>
@@ -134,7 +121,7 @@ export class TileMap extends React.Component<{
             </ListItemIcon>
             <ListItemText primary={`Export Tiles`} />
           </ListItemButton>
-          <ListItemButton onClick={this.loadPalette}>
+          <ListItemButton onClick={this.loadPalette.bind(this)}>
             <ListItemIcon>
               <AddCircleIcon />
             </ListItemIcon>
@@ -148,7 +135,7 @@ export class TileMap extends React.Component<{
           gridTemplateRows: `repeat(${MAX_WIDTH}, ${SECTION_SIZE}px [col-start])`
         }}
         tabIndex={1}
-        onKeyDown={this.onKeyDown}
+        onKeyDown={this.onKeyDown.bind(this)}
       >
         {mapSections}
       </div>

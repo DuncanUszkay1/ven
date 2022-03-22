@@ -17,21 +17,6 @@ export class BackgroundEditor extends React.Component<{
 }> {
   state = {createDialogOpen: false, createDialogName: null, createDialogImg: null}
 
-  constructor(props: any) {
-    super(props);
-
-    this.deleteBackground = this.deleteBackground.bind(this);
-    this.openCreateDialog = this.openCreateDialog.bind(this);
-    this.closeCreateDialog = this.closeCreateDialog.bind(this);
-    this.submitCreateDialog = this.submitCreateDialog.bind(this);
-    this.updateCreateDialogName = this.updateCreateDialogName.bind(this);
-    this.updateCreateDialogImg = this.updateCreateDialogImg.bind(this);
-  }
-
-  deleteBackground(background: Background) {
-    // this.setState({selectedBackground: background});
-  }
-
   openCreateDialog() {
     this.setState({createDialogOpen: true})
   }
@@ -76,7 +61,7 @@ export class BackgroundEditor extends React.Component<{
             actionIcon={
               <IconButton
                 aria-label={`info about ${item.name}`}
-                onClick={() => { this.props.deleteBackground(item)}}
+                onClick={() => { this.props.deleteBackground(item) }}
               >
                 <DeleteIcon  />
               </IconButton>
@@ -96,7 +81,7 @@ export class BackgroundEditor extends React.Component<{
             type="text"
             fullWidth
             variant="standard"
-            onChange={this.updateCreateDialogName}
+            onChange={this.updateCreateDialogName.bind(this)}
           />
           <TextField
             autoFocus
@@ -106,12 +91,12 @@ export class BackgroundEditor extends React.Component<{
             type="text"
             fullWidth
             variant="standard"
-            onChange={this.updateCreateDialogImg}
+            onChange={this.updateCreateDialogImg.bind(this)}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.closeCreateDialog}>Cancel</Button>
-          <Button onClick={this.submitCreateDialog}>Create</Button>
+          <Button onClick={this.closeCreateDialog.bind(this)}>Cancel</Button>
+          <Button onClick={this.submitCreateDialog.bind(this)}>Create</Button>
         </DialogActions>
       </Dialog>
       <ImageListItem key={"NEW_BG"} sx={{border: "1px solid grey"}}>
@@ -127,7 +112,7 @@ export class BackgroundEditor extends React.Component<{
           actionIcon={
             <IconButton
               aria-label={`info about new background`}
-              onClick={this.openCreateDialog}
+              onClick={this.openCreateDialog.bind(this)}
             >
               <AddCircleIcon  />
             </IconButton>

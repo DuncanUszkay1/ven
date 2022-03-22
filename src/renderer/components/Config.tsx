@@ -1,14 +1,6 @@
 import React from 'react';
-import { TileMap } from './TileMap';
-import { TileForm } from './TileForm';
-import { Background, Tile } from '../App';
 import { Box } from '@mui/system';
-import { Alert, Button, Divider, IconButton, Input, Snackbar, Stack, TextField, Typography } from '@mui/material';
-import { TabPanel } from './TabPanel';
-import { BackgroundEditor } from './BackgroundEditor';
-import { SelectedList } from './SelectableList';
-import { NEW_MAP, VOID_TILE, NEW_TILE, VenMap } from 'model/Campaign';
-import path from 'path';
+import { Alert, Button, Snackbar, TextField, Typography } from '@mui/material';
 
 
 export class Config extends React.Component<
@@ -21,17 +13,9 @@ export class Config extends React.Component<
   }
 > {
   state = { tabletopDir: null, errorMessage: null }
-  constructor(props: any) {
-    super(props);
-
-    this.updateTabletopDir = this.updateTabletopDir.bind(this);
-    this.closeSnackbar = this.closeSnackbar.bind(this);
-    this.confirmSettings = this.confirmSettings.bind(this);
-  }
 
   updateTabletopDir(event: any) {
     this.setState({ tabletopDir: event.target.value })
-
   }
 
   confirmSettings() {
@@ -63,11 +47,11 @@ export class Config extends React.Component<
           id="outlined-required"
           label="Tabletop Saved Object Directory"
           sx={{ marginBottom: "30px" }}
-          onChange={this.updateTabletopDir}
+          onChange={this.updateTabletopDir.bind(this)}
         />
-        <Button onClick={this.confirmSettings} variant="contained">Confirm</Button>
-        <Snackbar open={this.state.errorMessage !== null} autoHideDuration={6000} onClose={this.closeSnackbar}>
-          <Alert onClose={this.closeSnackbar} severity="error" sx={{ width: '100%' }}>
+        <Button onClick={this.confirmSettings.bind(this)} variant="contained">Confirm</Button>
+        <Snackbar open={this.state.errorMessage !== null} autoHideDuration={6000} onClose={this.closeSnackbar.bind(this)}>
+          <Alert onClose={this.closeSnackbar.bind(this)} severity="error" sx={{ width: '100%' }}>
             {this.state.errorMessage}
           </Alert>
         </Snackbar>

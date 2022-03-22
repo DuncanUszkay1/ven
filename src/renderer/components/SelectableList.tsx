@@ -18,14 +18,6 @@ export class SelectedList extends React.Component<{
 }
 > {
   state = {createDialogOpen: false, createDialogName: null}
-  constructor(props: any) {
-    super(props)
-
-    this.openCreateDialog = this.openCreateDialog.bind(this);
-    this.closeCreateDialog = this.closeCreateDialog.bind(this);
-    this.submitCreateDialog = this.submitCreateDialog.bind(this);
-    this.updateCreateDialogName = this.updateCreateDialogName.bind(this);
-  }
 
   openCreateDialog() {
     this.setState({createDialogOpen: true})
@@ -62,7 +54,7 @@ export class SelectedList extends React.Component<{
     return <Box sx={{ width: '132px', maxWidth: 360, bgcolor: 'background.paper', height: "100%" }}>
       <List component="nav" aria-label="main mailbox folders" sx={{width: '132px', paddingTop: "0px"}}>
         {listItems}
-        <Dialog open={this.state.createDialogOpen} onClose={this.closeCreateDialog}>
+        <Dialog open={this.state.createDialogOpen} onClose={this.closeCreateDialog.bind(this)}>
         <DialogTitle>Create New {this.props.itemName}</DialogTitle>
         <DialogContent>
           <TextField
@@ -73,18 +65,18 @@ export class SelectedList extends React.Component<{
             type="text"
             fullWidth
             variant="standard"
-            onChange={this.updateCreateDialogName}
+            onChange={this.updateCreateDialogName.bind(this)}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.closeCreateDialog}>Cancel</Button>
-          <Button onClick={this.submitCreateDialog}>Create</Button>
+          <Button onClick={this.closeCreateDialog.bind(this)}>Cancel</Button>
+          <Button onClick={this.submitCreateDialog.bind(this)}>Create</Button>
         </DialogActions>
       </Dialog>
 
         <ListItemButton
           selected={false}
-          onClick={this.openCreateDialog}
+          onClick={this.openCreateDialog.bind(this)}
           sx={{justifyContent: "center"}}
         >
           <ListItemIcon sx={{minWidth: "0px"}}>

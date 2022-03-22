@@ -19,25 +19,6 @@ export class Editor extends React.Component<{
 }, { section: number, draft: Campaign }> {
   state = { section: 0, draft: this.props.campaign } 
 
-  constructor(props: any) {
-    super(props);
-
-    this.updatePanel = this.updatePanel.bind(this);
-    this.saveCharacter = this.saveCharacter.bind(this);
-    this.createCharacter = this.createCharacter.bind(this);
-    this.deleteCharacter = this.deleteCharacter.bind(this);
-    this.saveItem = this.saveItem.bind(this);
-    this.createItem = this.createItem.bind(this);
-    this.deleteItem = this.deleteItem.bind(this);
-    this.saveMap = this.saveMap.bind(this);
-    this.newCharacterFolder = this.newCharacterFolder.bind(this);
-    this.newItemFolder = this.newItemFolder.bind(this);
-    this.createBackground = this.createBackground.bind(this);
-    this.deleteBackground = this.deleteBackground.bind(this);
-    this.tabletopImport = this.tabletopImport.bind(this);
-    this.saveCampaign = this.saveCampaign.bind(this);
-  }
-
   updatePanel(newValue: number) {
     this.setState({ section: newValue })
   }
@@ -132,6 +113,7 @@ export class Editor extends React.Component<{
   }
 
   deleteBackground(background: Background, mapName: string) {
+    console.log("deleting bg")
     const draft = this.state.draft;
     const draftMap = draft.maps.get(mapName)!;
     const updatedMaps = draft.maps.set(mapName, {...draftMap, backgrounds: draftMap.backgrounds.filter((bg) => {
@@ -157,34 +139,34 @@ export class Editor extends React.Component<{
       <Box
         sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex' }}
       >
-        <Sidebar updatePanel={this.updatePanel}/>
+        <Sidebar updatePanel={this.updatePanel.bind(this)}/>
         <TabPanel value={this.state.section} index={0}>
-          <Overview tabletopImport={this.tabletopImport} saveCampaign={this.saveCampaign}/>
+          <Overview tabletopImport={this.tabletopImport.bind(this)} saveCampaign={this.saveCampaign.bind(this)}/>
         </TabPanel>
         <TabPanel value={this.state.section} index={1}>
           <CharacterEditor
             characters={this.state.draft.characters}
-            saveCharacter={this.saveCharacter}
-            createCharacter={this.createCharacter}
-            newFolder={this.newCharacterFolder}
-            deleteCharacter={this.deleteCharacter}
+            saveCharacter={this.saveCharacter.bind(this)}
+            createCharacter={this.createCharacter.bind(this)}
+            newFolder={this.newCharacterFolder.bind(this)}
+            deleteCharacter={this.deleteCharacter.bind(this)}
           /> 
         </TabPanel>
         <TabPanel value={this.state.section} index={2}>
           <ItemEditor
             items={this.state.draft.items}
-            saveItem={this.saveItem}
-            createItem={this.createItem}
-            newFolder={this.newItemFolder}
-            deleteItem={this.deleteItem}
+            saveItem={this.saveItem.bind(this)}
+            createItem={this.createItem.bind(this)}
+            newFolder={this.newItemFolder.bind(this)}
+            deleteItem={this.deleteItem.bind(this)}
           /> 
         </TabPanel>
         <TabPanel value={this.state.section} index={3}>
           <MapEditor
             maps={this.state.draft.maps}
-            saveMap={this.saveMap}
-            createBackground={this.createBackground}
-            deleteBackground={this.deleteBackground}
+            saveMap={this.saveMap.bind(this)}
+            createBackground={this.createBackground.bind(this)}
+            deleteBackground={this.deleteBackground.bind(this)}
           />
         </TabPanel>
       </Box>

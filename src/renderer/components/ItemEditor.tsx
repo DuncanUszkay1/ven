@@ -20,17 +20,6 @@ export class ItemEditor extends React.Component<
 > {
   state = { selectedItem: undefined, folder: this.props.items.keys().next().value }
 
-  constructor(props: any) {
-    super(props);
-
-    this.editItem = this.editItem.bind(this);
-    this.saveItem = this.saveItem.bind(this);
-    this.createItem = this.createItem.bind(this);
-    this.deleteItem = this.deleteItem.bind(this);
-    this.setFolder = this.setFolder.bind(this);
-    this.newFolder = this.newFolder.bind(this);
-  }
-
   editItem(item: Item) {
     this.setState({selectedItem: item});
   }
@@ -57,9 +46,9 @@ export class ItemEditor extends React.Component<
       />
     } else {
       return <ItemExplorer 
-        editItem={this.editItem}
+        editItem={this.editItem.bind(this)}
         items={this.props.items.get(this.state.folder) || []}
-        createItem={this.createItem}
+        createItem={this.createItem.bind(this)}
       />
     }
   }
@@ -77,10 +66,10 @@ export class ItemEditor extends React.Component<
       <SelectedList
         items={Array.from(this.props.items.keys())}
         selected={this.state.folder}
-        select={this.setFolder}
+        select={this.setFolder.bind(this)}
         key={this.state.folder}
         itemName="Item Folder"
-        new={this.newFolder}/>  
+        new={this.newFolder.bind(this)}/>  
       <Divider orientation="vertical" flexItem />
       {this.innerContent()} 
     </Stack> 
@@ -94,15 +83,6 @@ class EditItemForm extends React.Component<{
   delete: (uuid: string) => void
 }, {item: Item}> {
   state = { item: this.props.item }
-
-  constructor(props: any) {
-    super(props);
-
-    this.editName = this.editName.bind(this);
-    this.editDescription = this.editDescription.bind(this);
-    this.editDMNotes = this.editDMNotes.bind(this);
-    this.editImg = this.editImg.bind(this);
-  }
 
   editName(event: any) {
     this.setState({item: { ...this.state.item, name: event.target.value }})
@@ -146,7 +126,7 @@ class EditItemForm extends React.Component<{
           id="outlined-required"
           label="Image URL"
           defaultValue={this.state.item.img}
-          onChange={this.editImg}
+          onChange={this.editImg.bind(this)}
         />
 
         <TextField
@@ -154,7 +134,7 @@ class EditItemForm extends React.Component<{
           id="outlined-required"
           label="Name"
           defaultValue={this.state.item.name}
-          onChange={this.editName}
+          onChange={this.editName.bind(this)}
         />
         <TextField
           fullWidth
@@ -162,7 +142,7 @@ class EditItemForm extends React.Component<{
           id="outlined-required"
           label="Description"
           defaultValue={this.state.item.description}
-          onChange={this.editDescription}
+          onChange={this.editDescription.bind(this)}
         />
         <TextField
           fullWidth
@@ -170,7 +150,7 @@ class EditItemForm extends React.Component<{
           id="outlined-required"
           label="DM Notes"
           defaultValue={this.state.item.dmNotes}
-          onChange={this.editDMNotes}
+          onChange={this.editDMNotes.bind(this)}
         />
         <Button variant="text" onClick={() => {
           this.props.delete(this.props.item.uuid)
