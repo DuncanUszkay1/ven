@@ -8,12 +8,10 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain, ipcRenderer, dialog } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import { resolveHtmlPath } from './util';
 import { TabletopImporter } from '../tabletop_simulator/import';
-import { DUMMY_CAMPAIGN } from '../model/Campaign';
 import Store from 'electron-store';
-import { fstat } from 'fs';
 import fs from 'fs';
 
 let mainWindow: BrowserWindow | null = null;
@@ -27,29 +25,42 @@ const configured = () => {
   return storedTabletopValue != undefined
 }
 
+function saveFile(content: any, fileType: string) {
+  if(mainWindow !== null) {
+    const filename = dialog.showSaveDialogSync(mainWindow, { filters: [{name: fileType, extensions: [".json"]}]})
+    if(filename !== undefined) {
+      fs.writeFileSync(filename, JSON.stringify(content, replacer, 2));
+    }
+  }
+}
+
+function loadFile(fileType: string) {
+  if(mainWindow !== null) {
+    const filename = dialog.showOpenDialogSync(mainWindow, { filters: [{name: fileType, extensions: [".json"]}]})
+    if(filename !== undefined) {
+      const raw_content = fs.readFileSync(filename[0], 'utf8');
+      return JSON.parse(raw_content, reviver);
+    }
+  }
+}
 
 ipcMain.on('import-campaign', async (event, arg) => {
   const importer = new TabletopImporter(config.get(TABLETOP_DIR_KEY) as string);
   importer.importCampaign(arg)
 });
 
-ipcMain.on('save-campaign', async (event, arg) => {
-  if(mainWindow !== null) {
-    const filename = dialog.showSaveDialogSync(mainWindow, { filters: [{name: "Ven Campaigns", extensions: [".json"]}]})
-    console.log(arg)
-    if(filename !== undefined) {
-      fs.writeFileSync(filename, JSON.stringify(arg, replacer, 2));
-    }
-  }
-});
+ipcMain.on('save-campaign', async (event, arg) => { saveFile(arg, "Ven Campaign") });
+ipcMain.on('load-campaign-request', async (event) => { event.sender.send('load-campaign', loadFile("Ven Campaign")) });
+ipcMain.on('save-tileset', async (event, arg) => { saveFile(arg, "Ven Tileset") });
+ipcMain.on('load-tileset-request', async (event) => { event.sender.send('load-tileset', loadFile("Ven Tileset")) });
 
-ipcMain.on('load-campaign-request', async (event) => {
+ipcMain.on('import-tileset-request', async (event, arg) => {
   if(mainWindow !== null) {
-    const filename = dialog.showOpenDialogSync(mainWindow, { filters: [{name: "Ven Campaigns", extensions: [".json"]}]})
+    const filename = dialog.showOpenDialogSync(mainWindow, { filters: [{name: "Ven Tilesets", extensions: [".json"]}]})
     if(filename !== undefined) {
-      const raw_campaign = fs.readFileSync(filename[0]).toString();
-      const campaign = JSON.parse(raw_campaign, reviver);
-      event.sender.send('load-campaign', campaign)
+      const raw_tileset = fs.readFileSync(filename[0]).toString();
+      const tileset = JSON.parse(raw_tileset, reviver);
+      event.sender.send('load-tileset', tileset)
     }
   }
 });

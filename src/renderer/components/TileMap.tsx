@@ -1,10 +1,8 @@
-import { ClassNames } from '@emotion/react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { Co2Sharp, Square } from '@mui/icons-material';
-import { Grid, List, ListItemButton, ListItemIcon, ListItemText, Stack, TextField, Tooltip, Typography } from '@mui/material';
-import { VenMap, VOID_TILE } from 'model/Campaign';
+import { Square } from '@mui/icons-material';
+import { List, ListItemButton, ListItemIcon, ListItemText, Stack, TextField } from '@mui/material';
+import { VOID_TILE } from 'model/Campaign';
 import React from 'react';
-import { ReactNode } from 'react';
 
 const MAX_WIDTH = 30;
 const MAX_HEIGHT = 30;
@@ -26,6 +24,8 @@ type Selection = {
 export class TileMap extends React.Component<{
   tileMapping: Tile[][],
   tilePalette: Tile[],
+  savePalette: (palette: Tile[]) => void,
+  loadPalette: () => Tile[],
   editTile: (tile: Tile) => void,
   addTile: () => void,
   saveTileMapping: (tileMap: Tile[][]) => void
@@ -57,6 +57,17 @@ export class TileMap extends React.Component<{
     this.select = this.select.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
     this.addTile = this.addTile.bind(this);
+    this.loadPalette = this.loadPalette.bind(this);
+  }
+
+  componentDidMount() {
+    window.electron.ipcRenderer.onTilesetLoad(() => {
+      this.setState({ refreshPaletteOnRender: true });
+    })
+  }
+
+  exportTiles() {
+    this.props.savePalette(this.props.tilePalette);
   }
 
   componentDidUpdate() {
@@ -68,7 +79,16 @@ export class TileMap extends React.Component<{
     }
   }
 
+  loadPalette() {
+    console.log("loadPalette called");
+    this.props.loadPalette();
+    this.setState({
+      refreshPaletteOnRender: true
+    })
+  }
+
   render() {
+    console.log("rendering tilemap");
     const mapSections = this.state.mapSections.map((row, rowIndex) => {
       return row.map((mapSection: MapSectionData, columnIndex) => {
         return <MapSection
@@ -107,6 +127,18 @@ export class TileMap extends React.Component<{
               <AddCircleIcon />
             </ListItemIcon>
             <ListItemText primary={`New Tile`} />
+          </ListItemButton>
+          <ListItemButton onClick={this.props.savePalette}>
+            <ListItemIcon>
+              <AddCircleIcon />
+            </ListItemIcon>
+            <ListItemText primary={`Export Tiles`} />
+          </ListItemButton>
+          <ListItemButton onClick={this.loadPalette}>
+            <ListItemIcon>
+              <AddCircleIcon />
+            </ListItemIcon>
+            <ListItemText primary={`Import Tiles`} />
           </ListItemButton>
         </List>
       </Stack>

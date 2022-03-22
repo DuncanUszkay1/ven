@@ -14,8 +14,8 @@ export class MapEditor extends React.Component<
   {
     maps: Map<string, VenMap>,
     saveMap: (map: VenMap) => void,
-    createBackground: (background: Background, mapName: string) => void
-    deleteBackground: (background: Background, mapName: string) => void
+    createBackground: (background: Background, mapName: string) => void,
+    deleteBackground: (background: Background, mapName: string) => void,
   },
   { selectedTile: Tile | null, tabValue: number, selectedMap: string }
 > {
@@ -36,6 +36,16 @@ export class MapEditor extends React.Component<
     this.createBackground = this.createBackground.bind(this);
     this.deleteBackground = this.deleteBackground.bind(this);
     this.findTilePaletteID = this.findTilePaletteID.bind(this);
+    this.savePalette = this.savePalette.bind(this);
+    this.loadPalette = this.loadPalette.bind(this);
+  }
+
+  componentDidMount() {
+    window.electron.ipcRenderer.onTilesetLoad((tileset: Tile[]) => {
+      const oldMap = this.selectedMap();
+      const newMap: VenMap = {...oldMap, tilePalette: tileset};
+      this.props.saveMap(newMap);
+    })
   }
 
   editTile(tile: Tile) {
@@ -137,6 +147,14 @@ export class MapEditor extends React.Component<
     this.props.deleteBackground(background, this.state.selectedMap)
   }
 
+  savePalette() {
+    window.electron.ipcRenderer.saveTileset(this.selectedMap().tilePalette);
+  }
+
+  loadPalette() {
+    window.electron.ipcRenderer.loadTileset();
+  }
+
   innerContent() {
     if(this.selectedMap() == null) {
       return <Stack sx={{ width: '100%', marginTop: '15px', justifyContent: 'center', alignItems: 'center' }}>
@@ -169,6 +187,8 @@ export class MapEditor extends React.Component<
               addTile={this.newTile}
               key={this.selectedMap().name}
               saveTileMapping={this.updateTileMap}
+              savePalette={this.savePalette}
+              loadPalette={this.loadPalette}
             />
         }
       </TabPanel>

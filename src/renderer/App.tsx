@@ -1,10 +1,8 @@
 import { CampaignSelector } from './components/CampaignSelector';
-import { dialog } from 'electron';
 import React from 'react';
 import { Editor } from './components/Editor';
 import { Campaign, EMPTY_CAMPAIGN } from '../model/Campaign';
 export { Campaign, Character, Tile, Item, VOID_TILE, Background } from '../model/Campaign';
-import querystring from 'querystring'
 import { Config } from './components/Config';
 
 declare global {
@@ -14,8 +12,11 @@ declare global {
         importCampaign: (campaign: Campaign) => void;
         saveCampaign: (campaign: Campaign) => void;
         loadCampaign: () => void;
-        updateTabletopDir: (dir: string) => void;
         onCampaignLoad: (func: (campaign: Campaign) => void) => void; 
+        saveTileset: (tiles: Tile[]) => void;
+        loadTileset: () => void;
+        onTilesetLoad: (func: (tiles: Tile[]) => void) => void; 
+        updateTabletopDir: (dir: string) => void;
       }
     }
   }
@@ -77,8 +78,6 @@ export class App extends React.Component<{cool: boolean}, AppState> {
   }
 
   render() {
-    console.log("rendering campaign...")
-    console.log(this.state.campaign)
     if(this.state.configured) {
       if(this.state.campaign === undefined) {
         return <CampaignSelector setCampaign={this.setCampaign} loadCampaign={this.loadCampaign} newCampaign={this.newCampaign} />

@@ -180,7 +180,12 @@ export class Editor extends React.Component<{
           /> 
         </TabPanel>
         <TabPanel value={this.state.section} index={3}>
-          <MapEditor maps={this.state.draft.maps} saveMap={this.saveMap} createBackground={this.createBackground} deleteBackground={this.deleteBackground}/>
+          <MapEditor
+            maps={this.state.draft.maps}
+            saveMap={this.saveMap}
+            createBackground={this.createBackground}
+            deleteBackground={this.deleteBackground}
+          />
         </TabPanel>
       </Box>
     </Stack> 

@@ -13,12 +13,20 @@ contextBridge.exposeInMainWorld('electron', {
     loadCampaign() {
       ipcRenderer.send('load-campaign-request');
     },
-    updateTabletopDir(dir) {
-      console.log("updating tabletop dir")
-      ipcRenderer.send('update-tabletop-dir', dir)
-    },
     onCampaignLoad(func) {
       ipcRenderer.on('load-campaign', (event, campaign) => func(campaign))
+    },
+    saveTileset(tileset) {
+      ipcRenderer.send('save-tileset', tileset);
+    },
+    loadTileset() {
+      ipcRenderer.send('load-tileset-request');
+    },
+    onTilesetLoad(func) {
+      ipcRenderer.on('load-tileset', (event, tileset) => func(tileset))
+    },
+    updateTabletopDir(dir) {
+      ipcRenderer.send('update-tabletop-dir', dir)
     },
     on(channel, func) {
       const validChannels = ['ipc-example'];
